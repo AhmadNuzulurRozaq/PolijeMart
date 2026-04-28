@@ -6,5 +6,14 @@
 <h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
 <h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
 <h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
+<h1 class="text-3xl font-bold p-4">HALAMAN UTAMA | NAUFAL</h1>
 
 @endsection
