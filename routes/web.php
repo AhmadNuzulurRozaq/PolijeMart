@@ -46,6 +46,7 @@ Route::middleware('admin')->group(function (){
     Route::delete('/category/destroyCategory/{id)', [AdminController::class, 'destroyCategory'])->name('admin.destroyCategory');
 
     Route::get('/orders', [AdminController::class, 'manageOrder'])->name('admin.manageOrder');
+    Route::post('/order/{id}/selesai', [AdminController::class, 'completeOrder'])->name('admin.completeOrder');
 });
 
 Route::middleware('user')->group(function (){

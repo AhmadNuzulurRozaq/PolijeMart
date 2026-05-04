@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Kategori;
+use App\Models\Penjualan;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -198,6 +199,18 @@ class AdminController extends Controller
 
     public function manageOrder()
     {
-        return view('admin.orders.order');
+        $order = Penjualan::with('user')->orderBy('created_at', 'desc')->get();
+        return view('admin.orders.order', compact('order'));
+    }
+
+    public function completeOrder($id){
+        
+        $penjualan = Penjualan::findOrFail($id);
+
+        $penjualan->update([
+            'status' => 'selesai',
+        ]);
+
+        return redirect()->back()->with('status', 'Status pesanan berhasil diambil');
     }
 }

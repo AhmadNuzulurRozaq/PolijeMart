@@ -34,7 +34,7 @@
         <div class="flex flex-col gap-3 mb-3">
             <label for="namaBarang" class="text-xl">Nama Produk : </label>
             <input type="text" name="nama_barang" id="" value="{{ old('nama_barang') }}" required class="p-2 border-3 outline-none 
-            @error('kode_barang')
+            @error('nama_barang')
                 border-red-600 hover:border-red-400 active:border-red-600 focus:border-red-500
             @else
                 border-gray-300 hover:border-[#0091D5] active:border-[#0091D5] focus:border-[#0091D5]
@@ -46,9 +46,9 @@
         @enderror
 
         <div class="flex flex-col gap-3 mb-3">
-            <label for="deskripsiBarang" class="text-xl">Deskirpsi : </label>
+            <label for="deskripsiBarang" class="text-xl">Deskripsi : </label>
             <textarea name="deskripsi" id="" cols="30" rows="10" required class="p-2 border-3 outline-none 
-            @error('kode_barang')
+            @error('deskripsi')
                 border-red-600 hover:border-red-400 active:border-red-600 focus:border-red-500
             @else
                 border-gray-300 hover:border-[#0091D5] active:border-[#0091D5] focus:border-[#0091D5]
@@ -69,7 +69,7 @@
             @enderror
             rounded-md transition-colors">
         </div>
-        @error('email')
+        @error('stok')
             <p class="text-red-500 text-xs mt-1 ml-2 mb-2 font-medium">{{ $message }}</p>
         @enderror
 

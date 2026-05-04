@@ -4,19 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Penjualan extends Model
+class Keranjang extends Model
 {
-    protected $table = 'penjualans';
+    protected $table = 'keranjangs';
     protected $fillable = [
-        'id',
         'user_id',
-        'tanggal_penjualan',
-        'total_bayar',
-        'status',
-        'batas_waktu',
+        'barang_id',
+        'jumlah',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function barang(){
+        return $this->belongsTo(Barang::class);
     }
 }
