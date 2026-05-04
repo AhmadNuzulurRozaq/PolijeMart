@@ -1,21 +1,13 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'; // Tambahkan baris ini
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/test.js'],
-            refresh: true,
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true, // Ini yang bikin auto-reload aktif
         }),
-        tailwindcss(),
+        tailwindcss(), // Panggil plugin di sini
     ],
-    server: {
-        host: true, 
-        port: 5173,
-        hmr: {
-            
-            // host: '192.168.1.14', 
-        }
-    }
 });
