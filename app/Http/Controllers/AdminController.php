@@ -16,19 +16,17 @@ class AdminController extends Controller
         return view('admin.dashboard', compact(['total']));
     }
 
-    public function inventory(Request $request)
+    public function inventory()
     {
 
-        $search = $request->input('search');
+        // $search = $request->input('search');
+        // $barang = Barang::when($search, function ($query, $search) {
+        //     $query->where('kode_barang', 'like', '%' . $search . '%')
+        //         ->orWhere('nama_barang', 'like', '%' . $search . '%');
+        // })->with('kategori')->paginate(10);
 
-        // $barang = Barang::with('kategori')->paginate(10);
-        $barang = Barang::when($search, function ($query, $search) {
-            $query->where('kode_barang', 'like', '%' . $search . '%')
-                ->orWhere('nama_barang', 'like', '%' . $search . '%');
-        })->with('kategori')->paginate(10);
-
-        $total = Barang::count();
-        return view('admin.inventory', compact(['barang', 'total', 'search']));
+        // $total = Barang::count();
+        return view('admin.inventory');
     }
 
     public function addData()
@@ -136,18 +134,17 @@ class AdminController extends Controller
     }
 
     // CONTROLLER UNTUK MENAMBAH KATEGORI
-    public function manageCategory(Request $request)
+    public function manageCategory()
     {
 
-        $search = $request->input('search');
+        // $search = $request->input('search');
 
-        // $kategori = Kategori::all();
-        $kategori = Kategori::when($search, function ($query, $search) {
-            $query->where('nama_kategori', 'like', '%' . $search . '%');
-        })->paginate(10);
+        // $kategori = Kategori::when($search, function ($query, $search) {
+        //     $query->where('nama_kategori', 'like', '%' . $search . '%');
+        // })->paginate(10);
 
-        $total = Kategori::count();
-        return view('admin.category.category', compact(['kategori', 'total', 'search']));
+        // $total = Kategori::count();
+        return view('admin.category.category');
     }
 
     public function addCategory()
