@@ -13,19 +13,12 @@ class AdminController extends Controller
     public function dashboard()
     {
         $total = Barang::count();
-        return view('admin.dashboard', compact(['total']));
+        $order = Penjualan::count();
+        return view('admin.dashboard', compact(['total', 'order']));
     }
 
     public function inventory()
     {
-
-        // $search = $request->input('search');
-        // $barang = Barang::when($search, function ($query, $search) {
-        //     $query->where('kode_barang', 'like', '%' . $search . '%')
-        //         ->orWhere('nama_barang', 'like', '%' . $search . '%');
-        // })->with('kategori')->paginate(10);
-
-        // $total = Barang::count();
         return view('admin.inventory');
     }
 
@@ -77,13 +70,6 @@ class AdminController extends Controller
         $barang = Barang::findOrFail($id);
         $kategori = Kategori::get();
         return view('admin.editData', compact(['barang', 'kategori']));
-        // $barang = Barang::find($id);
-        // if($barang){
-        //     $kategori = Kategori::get();
-        //     return view('admin.editData', compact(['barang', 'kategori']));
-        // } else{
-        //     return "Barang dengan $id tidak ditemukan";
-        // }
     }
 
     public function updateData(Request $request, $id)
@@ -136,14 +122,6 @@ class AdminController extends Controller
     // CONTROLLER UNTUK MENAMBAH KATEGORI
     public function manageCategory()
     {
-
-        // $search = $request->input('search');
-
-        // $kategori = Kategori::when($search, function ($query, $search) {
-        //     $query->where('nama_kategori', 'like', '%' . $search . '%');
-        // })->paginate(10);
-
-        // $total = Kategori::count();
         return view('admin.category.category');
     }
 
@@ -196,18 +174,18 @@ class AdminController extends Controller
 
     public function manageOrder()
     {
-        $order = Penjualan::with('user')->orderBy('created_at', 'desc')->get();
-        return view('admin.orders.order', compact('order'));
-    }
-
-    public function completeOrder($id){
         
-        $penjualan = Penjualan::findOrFail($id);
-
-        $penjualan->update([
-            'status' => 'selesai',
-        ]);
-
-        return redirect()->back()->with('status', 'Status pesanan berhasil diambil');
+        return view('admin.orders.order');
     }
+
+    // public function completeOrder($id){
+        
+    //     $penjualan = Penjualan::findOrFail($id);
+
+    //     $penjualan->update([
+    //         'status' => 'selesai',
+    //     ]);
+
+    //     return redirect()->back()->with('status', 'Status pesanan berhasil diambil');
+    // }
 }

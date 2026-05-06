@@ -8,27 +8,27 @@
     <form action="{{ route('admin.storeCategory') }}" method="POST" id="submitForm">
         @csrf
 
-        <div class="flex flex-col gap-3 mb-3">
-            <label for="namaBarang" class="text-xl">Nama Kategori : </label>
-            <input type="text" name="nama_kategori" id="" value="{{ old('nama_kategori') }}" required class="p-2 border-3 outline-none 
-            @error('kode_barang')
-                border-red-600 hover:border-red-400 active:border-red-600 focus:border-red-500
-            @else
-                border-gray-300 hover:border-[#0091D5] active:border-[#0091D5] focus:border-[#0091D5]
+        <div class="flex flex-col gap-2 md:col-span-2">
+            <label for="namaBarang" class="text-sm font-bold text-slate-700">Nama Produk <span class="text-red-500">*</span></label>
+            <input type="text" name="nama_barang" id="namaBarang" value="{{ old('nama_kategori') }}" required placeholder="Masukkan nama kategori..."
+                class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
+                    @error('nama_kategori')
+                        border-red-500 focus:ring-2 focus:ring-red-200
+                    @else
+                        border-slate-200 focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 hover:border-[#1C4E80]/50
+                    @enderror">
+            @error('nama_kategori')
+            <p class="text-red-500 text-xs font-semibold flex items-center gap-1">{{ $message }}</p>
             @enderror
-            rounded-md transition-colors">
         </div>
-        @error('nama_kategori')
-            <p class="text-red-500 text-xs mt-1 ml-2 mb-2 font-medium">{{ $message }}</p>
-        @enderror
-        <div class="flex justify-end gap-5 items-center">
-            <div class="flex gap-3">
-                <a href="{{ route('admin.manageCategory') }}" class="border-2 border-[#1C4E80] w-32 p-3 rounded-full text-[#202020] font-bold hover:bg-[#194674] hover:text-white active:bg-[#1C4E80] cursor-pointer transition-colors focus:outline-2 focus:outline-[#202020] focus:outline-offset-2 text-center">
+        <div class="flex justify-end gap-5 items-center mt-10">
+            <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 items-center">
+                <a href="{{ route('admin.manageCategory') }}" class="w-full sm:w-auto px-6 py-3 rounded-xl text-slate-700 bg-slate-100 font-bold hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200 text-center cursor-pointer">
                     KEMBALI
                 </a>
-            </div>
-            <div class="flex justify-end gap-3">
-                <button type="submit" class="bg-[#1C4E80] w-32 p-3 rounded-full text-white font-bold hover:bg-[#194674] active:bg-[#1C4E80] cursor-pointer transition-colors focus:outline-2 focus:outline-[#1C4E80] focus:outline-offset-2">KIRIM</button>
+                <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#1C4E80]/50">
+                    SIMPAN KATEGORI
+                </button>
             </div>
         </div>
     </form>

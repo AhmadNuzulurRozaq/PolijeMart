@@ -20,7 +20,7 @@
         </div>
         <div>
             <span class="font-semibold">TOTAL ORDER</span>
-            <h1 class="text-4xl font-bold text-[#202020]">ANGKA ORDER MASIH DIBUAT</h1>
+            <h1 class="text-4xl font-bold text-[#202020]">{{ $order }}</h1>
         </div>
     </div>
 </section>

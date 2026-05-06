@@ -3,63 +3,39 @@
 @section('title', 'New Password | Polije Mart')
 
 @section('content')
-
-<div>
-    <h1 class="text-2xl font-bold">RESET PASSWORD</h1>
-    <span>Masukkan kata sandi baru anda</span>
+<div class="mb-8 text-center lg:text-left">
+    <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">RESET PASSWORD</h1>
+    <p class="text-sm text-slate-500 mt-2 font-medium">Buat kata sandi baru untuk mengamankan akun Anda.</p>
 </div>
-<div>
-    <form action="{{ route('password.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <div class="mb-4 mt-4">
-            <input type="email" name="email" id="" placeholder="E-mail : " class="w-full p-3 rounded-xl text-sm outline-none focus:ring-0 transition-colors
-            @error('email')
-                border-red-500 focus:border-red-600 hover:border-red-500
-            @else
-                border-gray-200 focus:border-blue-600 hover:border-blue-500
-            @enderror
-            "
-            required 
-            value="{{ old('email', $request->email) }}">
-        </div>
+<form action="{{ route('password.store') }}" method="POST" class="space-y-4">
+    @csrf
+    <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        @error('email')
-            <p class="text-red-500 text-xs mt-1 ml-2 font-medium">{{ $message }}</p>
-        @enderror
+    <div>
+        <input type="email" name="email" placeholder="Alamat E-mail" value="{{ old('email', $request->email) }}" required readonly
+        class="w-full px-4 py-3 bg-slate-100 text-slate-500 border border-slate-200 outline-none rounded-xl text-sm cursor-not-allowed">
+        @error('email') <p class="text-red-500 text-xs mt-1.5 ml-1 font-semibold">{{ $message }}</p> @enderror
+    </div>
 
-        <div class="mb-4 mt-4">
-            <input type="password" name="password" id="" placeholder="Password : " class="w-full p-3 rounded-xl text-sm outline-none focus:ring-0 transition-colors
-            @error('password')
-                border-red-500 focus:border-red-600 hover:border-red-500
-            @else
-                border-gray-200 focus:border-blue-600 hover:border-blue-500
-            @enderror
-            " required>
-        </div>
+    <div>
+        <input type="password" name="password" placeholder="Password Baru" required
+        class="w-full px-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 focus:bg-white
+        @error('password') border-red-500 focus:ring-2 focus:ring-red-200 @else border-slate-200 focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 hover:border-[#1C4E80]/50 @enderror">
+        @error('password') <p class="text-red-500 text-xs mt-1.5 ml-1 font-semibold">{{ $message }}</p> @enderror
+    </div>
 
-        @error('password')
-            <p class="text-red-500 text-xs mt-1 ml-2 font-medium">{{ $message }}</p>
-        @enderror
+    <div>
+        <input type="password" name="password_confirmation" placeholder="Konfirmasi Password Baru" required
+        class="w-full px-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 focus:bg-white
+        @error('password_confirmation') border-red-500 focus:ring-2 focus:ring-red-200 @else border-slate-200 focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 hover:border-[#1C4E80]/50 @enderror">
+        @error('password_confirmation') <p class="text-red-500 text-xs mt-1.5 ml-1 font-semibold">{{ $message }}</p> @enderror
+    </div>
 
-        <div class="mb-2 mt-4">
-            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password : " class="w-full p-3 rounded-xl text-sm outline-none focus:ring-0 transition-colors
-            @error('password_confirmation')
-                border-red-500 focus:border-red-600 hover:border-red-500
-            @else
-                border-gray-200 focus:border-blue-600 hover:border-blue-500
-            @enderror
-            " required>
-        </div>
-
-        @error('password_confirmation')
-            <p class="text-red-500 text-xs mt-1 ml-2 font-medium">{{ $message }}</p>
-        @enderror
-
-        <div>
-            <button type="submit" class="bg-[#00b0f0] w-full p-3 rounded-full text-white font-bold hover:bg-[#0092c7] active:bg-[#006083] cursor-pointer transition-colors focus:outline-2 focus:outline-blue-500 focus:outline-offset-2">PERBARUI PASSWORD</button>
-        </div>
-    </form>
-</div>
+    <div class="pt-4">
+        <button type="submit" class="w-full py-3.5 px-4 bg-[#1C4E80] text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:bg-[#143a60] active:bg-[#0a233b] hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1C4E80]/50">
+            PERBARUI PASSWORD
+        </button>
+    </div>
+</form>
 @endsection
