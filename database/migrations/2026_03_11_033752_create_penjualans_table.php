@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->date('tanggal_penjualan');
             $table->decimal('total_bayar', 10, 2);
-            $table->enum('status', ['proses', 'selesai'])->default('proses');
+            $table->enum('status', ['proses', 'selesai', 'batal'])->default('proses');
             $table->dateTime('batas_waktu');
             $table->timestamps();
         });
