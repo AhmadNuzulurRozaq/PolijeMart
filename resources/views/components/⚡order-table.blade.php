@@ -24,14 +24,14 @@ new class extends Component
                 });
             })->paginate(10),
 
-            'expiredOrder' = Penjualan::where('status', 'proses')
-                                        ->where('batas_waktu', '<', Carbon::now())
-                                        ->get();
+            // 'expiredOrder' = Penjualan::where('status', 'proses')
+            //                             ->where('batas_waktu', '<', Carbon::now())
+            //                             ->get();
 
             'total' => Penjualan::count(),
         ];
 
-        foreach ()
+        
     }
 
 };
