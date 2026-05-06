@@ -3,92 +3,98 @@
 @section('title', 'Detail Produk - Polije Mart')
 
 @section('content')
-{{-- Container Utama dengan background abu-abu yang memenuhi layar --}}
-<div class="bg-[#94a3b8] min-h-screen w-full flex justify-center py-10 px-4 lg:px-8" x-data="{ openModal: false, jumlah: 1 }">
+<div class="bg-transparent w-full min-h-screen flex justify-center" x-data="{ openModal: false, jumlah: 1 }">
     
-    {{-- Card Putih --}}
-    <div class="bg-white rounded-[2.5rem] p-6 lg:p-12 shadow-2xl w-full max-w-[1300px] flex flex-col md:flex-row gap-8 lg:gap-12 border border-gray-100 self-start">
+    <div class="w-full max-w-6xl px-6 py-12 lg:py-20 flex flex-col md:flex-row items-center md:items-start gap-12 lg:gap-20">
         
-        {{-- Sisi Kiri: Foto Barang --}}
-        <div class="w-full md:w-[45%] bg-[#f3f4f6] rounded-[2rem] flex justify-center items-center p-6 lg:p-12">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" alt="Boneka Linux" class="w-full max-w-[380px] drop-shadow-2xl object-contain">
+        <div class="w-full md:w-1/2 flex justify-center">
+            <div class="bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-sm border border-slate-50 flex justify-center items-center w-full max-w-[450px]">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" 
+                     alt="Boneka Linux" 
+                     class="w-full drop-shadow-xl transition-transform duration-500 hover:scale-105">
+            </div>
         </div>
 
-        {{-- Sisi Kanan: Info Produk --}}
-        <div class="w-full md:w-[55%] flex flex-col justify-center py-2">
-            <h1 class="text-3xl lg:text-5xl font-bold text-black leading-tight uppercase tracking-tight">BONEKA LINUX ( TUX )</h1>
-            <p class="text-2xl lg:text-4xl font-semibold text-black mt-1">Rp 200.000</p>
+        <div class="w-full md:w-1/2 flex flex-col text-slate-800">
+            {{-- Bagian Judul & Harga (Tetap menyatu dengan background) --}}
+            <h1 class="text-4xl lg:text-6xl font-extrabold uppercase tracking-tight leading-tight mb-2">
+                BONEKA LINUX <br> <span class="text-slate-800 font-normal">( TUX )</span>
+            </h1>
             
-            <div class="border-t-2 border-gray-100 my-6 w-full lg:w-4/5"></div>
+            <div class="flex items-baseline gap-2 text-[#000000] mb-8">
+                <span class="text-xl lg:text-2xl font-semibold">Rp</span>
+                <span class="text-4xl lg:text-5xl font-black tracking-tighter">200.000</span>
+            </div>
 
-            <p class="text-xl lg:text-2xl font-medium mb-8 text-gray-700">Stok : <span class="font-bold text-black">50</span></p>
+            <div class="mb-10 flex items-center gap-6">
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Stok</p>
+                    <p class="text-2xl font-black text-slate-700">50 <span class="text-xs font-medium text-slate-400">PCS</span></p>
+                </div>
+                <div class="h-8 w-px bg-slate-200"></div>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Kategori</p>
+                    <p class="text-sm font-bold text-slate-700">Merchandise</p>
+                </div>
+            </div>
 
-            {{-- Tombol Aksi --}}
-            <div class="flex flex-wrap gap-4 mb-10">
-                <button @click="openModal = true" class="bg-[#00B4FF] text-white px-10 lg:px-14 py-2.5 rounded-full font-bold text-lg lg:text-xl shadow-lg hover:brightness-110 transition uppercase">
-                    BELI
+            <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                <button @click="openModal = true" 
+                        class="bg-[#00B4FF] text-white px-12 py-4 rounded-2xl font-bold text-lg shadow-lg shadow-cyan-100 hover:brightness-110 transition-all uppercase tracking-wide">
+                    Beli Sekarang
                 </button>
-                <button @click="openModal = true" class="border-2 border-[#00B4FF] text-[#00B4FF] px-8 lg:px-12 py-2.5 rounded-full font-bold text-lg lg:text-xl hover:bg-cyan-50 transition uppercase">
-                    KERANJANG
+                <button @click="openModal = true" 
+                        class="border-2 border-slate-100 bg-white/50 text-slate-500 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white transition-all uppercase">
+                    + Keranjang
                 </button>
             </div>
 
-            {{-- Box Deskripsi --}}
-            <div class="border border-gray-200 rounded-[1.5rem] p-6 lg:p-8 text-gray-600 text-sm lg:text-base leading-relaxed bg-gray-50/40 shadow-sm">
-                <h3 class="font-bold uppercase mb-3 text-gray-800 tracking-wider">DESKRIPSI PRODUK</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum porta nibh sed efficitur porta. Maecenas molestie enim sit amet nunc hendrerit porta. Nulla sed mollis enim, nec eleifend urna. Cras luctus orci ut imperdiet dignissim.</p>
+            <div class="bg-white p-6 lg:p-8 rounded-[2rem] shadow-sm border border-slate-50 relative overflow-hidden">
+                {{-- Aksen Biru Kecil di Pojok --}}
+                <div class="absolute top-0 left-0 w-2 h-full bg-[#00B4FF]/20"></div>
+                
+                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Deskripsi Produk</h3>
+                <p class="text-slate-500 leading-relaxed text-base lg:text-lg font-normal">
+                    Hadirkan ikon legendaris dunia IT ke meja kerjamu. Boneka Tux ini dibuat dengan bahan <span class="text-slate-800 font-semibold underline decoration-[#00B4FF]/30">velboa premium</span> yang sangat lembut. Sangat cocok untuk koleksi pribadi maupun hadiah bagi pecinta open source.
+                </p>
             </div>
         </div>
     </div>
 
-    {{-- MODAL (Pop-up) --}}
+    {{-- MODAL (Tetap sama seperti sebelumnya) --}}
     <div x-show="openModal" 
          x-transition.opacity
-         class="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-[999] p-4"
+         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex justify-center items-center z-[999] p-4"
          style="display: none;">
         
-        <div @click.away="openModal = false" class="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-2xl w-full max-w-4xl flex flex-col md:flex-row gap-8 lg:gap-10 animate-in zoom-in duration-200">
-            <div class="w-full md:w-1/3 flex justify-center items-center">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" alt="Boneka Linux" class="h-40 lg:h-56 object-contain">
+        <div @click.away="openModal = false" 
+             class="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-2xl w-full max-w-2xl flex flex-col md:flex-row gap-10 items-center">
+            
+            <div class="w-full md:w-1/3">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" class="h-32 lg:h-44 mx-auto drop-shadow-xl">
             </div>
 
-            <div class="w-full md:w-2/3 flex flex-col justify-center text-left">
-                <h1 class="text-2xl lg:text-4xl font-bold text-black uppercase">BONEKA LINUX ( TUX )</h1>
-                <p class="text-xl lg:text-3xl font-semibold text-black mt-1">Rp 200.000</p>
-                
-                <div class="border-t-2 border-gray-100 my-4 lg:my-6 w-full"></div>
-
-                <div class="flex items-center gap-4 lg:gap-6 mb-8 lg:mb-10">
-                    <div class="relative flex-grow">
-    <input type="number" 
-           x-model.number="jumlah" 
-           min="1"
-           @input="if (jumlah < 1) jumlah = 1"
-           class="w-full border-2 border-gray-100 rounded-full py-2.5 px-6 text-gray-500 focus:outline-none focus:border-cyan-300 bg-white shadow-sm italic text-sm lg:text-base [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-</div>
-                   <div class="flex items-center gap-4 lg:gap-6 text-3xl lg:text-4xl text-gray-300 font-light pr-2">
-    <!-- Tombol Kurang -->
-    <button @click="if(jumlah > 1) jumlah--" 
-            class="hover:text-black transition select-none cursor-pointer">
-        &minus;
+            <div class="w-full md:w-2/3">
+                <h2 class="text-3xl font-black text-slate-800 mb-6 italic">ORDER</h2>
+                <div class="flex items-center gap-4 mb-8">
+                    <input type="number" x-model.number="jumlah" min="1"
+                           class="w-full bg-slate-50 border-none rounded-xl py-4 px-6 text-2xl font-black text-slate-800 outline-none">
+                    <div class="flex gap-2">
+                        <button @click="if(jumlah > 1) jumlah--" class="w-12 h-12 rounded-xl bg-slate-100 text-xl font-bold">&minus;</button>
+                        <button @click="jumlah++" class="w-12 h-12 rounded-xl bg-slate-800 text-white text-xl font-bold">&#43;</button>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+    <button @click="openModal = false" class="flex-1 font-bold text-slate-400 uppercase text-sm">
+        Batal
     </button>
     
-    <!-- Tombol Tambah -->
-    <button @click="jumlah++" 
-            class="hover:text-black transition select-none cursor-pointer">
-        &#43;
+    {{-- Tombol Konfirmasi diarahkan ke route cart --}}
+    <button @click="window.location.href = '/customer/cart'" 
+            class="flex-[2] bg-[#00B4FF] text-white py-4 rounded-xl font-black text-lg uppercase tracking-widest shadow-md hover:brightness-110 transition-all">
+        Konfirmasi
     </button>
 </div>
-                </div>
-
-                <div class="flex gap-4">
-                    <button @click="openModal = false" class="flex-1 border-2 border-gray-200 text-[#00B4FF] py-2.5 rounded-xl font-bold text-lg hover:bg-gray-50 transition shadow-sm text-center">
-                        Kembali
-                    </button>
-                    <button class="flex-[1.5] bg-[#00B4FF] text-white py-2.5 rounded-xl font-bold text-lg shadow-lg hover:brightness-110 transition text-center">
-                        Proses
-                    </button>
-                </div>
             </div>
         </div>
     </div>
