@@ -40,6 +40,9 @@ new class extends Component
         $order = Penjualan::find($id);
 
         if ($order && in_array($order->status, ['selesai', 'batal'])) {
+            // Hapus detail penjualan terlebih dahulu untuk menghindari Foreign Key constraint error
+            $order->detail_penjualans()->delete();
+            
             $order->delete();
         }
     }
@@ -86,7 +89,7 @@ new class extends Component
 <div class="w-full max-w-7xl mx-auto">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">MANAGE ORDER</h1>
+            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">KELOLA PESANAN</h1>
             <p class="text-sm text-slate-500 mt-1 font-medium">Total: <span class="text-[#1C4E80] font-bold">{{ $total }}</span> Pesanan</p>
         </div>
         
@@ -116,7 +119,7 @@ new class extends Component
                 </thead>
                 <tbody class="text-slate-700 divide-y divide-slate-100">
                     @forelse($penjualan as $item)
-                    <tr class="hover:bg-slate-50 transition-colors group">
+                    <tr wire:key="order-{{ $item->id }}" class="hover:bg-slate-50 transition-colors group">
                         <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
                         <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
                         <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d M Y, H:i') }}</td>
@@ -143,17 +146,49 @@ new class extends Component
                         
                         <td class="p-4">
                             <div class="flex justify-center gap-2">
+                                
                                 @if($item->status == 'proses')
-                                    <button type="button" wire:click="selesaikanPesanan({{ $item->id }})" wire:confirm="Apakah pesanan ini sudah siap diambil untuk diselesaikan?" class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5">
+                                    <button type="button" @click="
+                                        Swal.fire({
+                                            title: 'Selesaikan Pesanan?',
+                                            text: 'Apakah pesanan ini sudah siap diambil untuk diselesaikan?',
+                                            icon: 'question',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#22c55e',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ya, Selesaikan!',
+                                            cancelButtonText: 'Batal'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                $wire.selesaikanPesanan({{ $item->id }});
+                                            }
+                                        })
+                                    " class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     </button>
                                 @endif
 
                                 @if(in_array($item->status, ['selesai', 'batal']))
-                                <button type="button" wire:click="hapusPesanan({{ $item->id }})" wire:confirm="Apakah Anda yakin ingin menghapus data pesanan ini?" class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
-                                </button>
+                                    <button type="button" @click="
+                                        Swal.fire({
+                                            title: 'Apakah Anda yakin?',
+                                            text: 'Data pesanan yang dihapus tidak dapat dikembalikan!',
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#d33',
+                                            cancelButtonColor: '#3085d6',
+                                            confirmButtonText: 'Ya, Hapus!',
+                                            cancelButtonText: 'Batal'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                $wire.hapusPesanan({{ $item->id }});
+                                            }
+                                        })
+                                    " class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
+                                    </button>
                                 @endif
+                                
                             </div>
                         </td>
                     </tr>

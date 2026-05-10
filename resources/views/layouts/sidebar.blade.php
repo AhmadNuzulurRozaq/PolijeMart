@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/SweetAlert2'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/SweetAlert2.js'])
     @livewireStyles
     <title>@yield('title', 'Polije Mart')</title>
     <style>
@@ -89,14 +89,17 @@
         </div>
 
         <!-- Tombol Logout di Bawah -->
-        <div class="p-4 border-t border-white/10 shrink-0 mb-4">
-            <form action="{{ route('logout') }}" method="POST">
+        <div class="p-4 border-t border-white/10 shrink-0 mb-4 text-center">
+            {{-- <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-red-500/80 hover:bg-red-600 text-white rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5M4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4z"/></svg>
                     LOG OUT
                 </button>
-            </form>
+            </form> --}}
+            <span class="text-xs italic">Sistem Informasi Penjualan Polije Mart<br>
+                Open Source IV | v1-2026.05
+            </span>
         </div>
     </aside>
 
@@ -130,7 +133,7 @@
                     </div>
                     <hr class="border-slate-100 md:hidden mb-2">
                     
-                    <a href="#" class="flex items-center gap-3 p-3 text-slate-600 hover:text-[#1C4E80] hover:bg-slate-50 rounded-lg transition-colors">
+                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 p-3 text-slate-600 hover:text-[#1C4E80] hover:bg-slate-50 rounded-lg transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 18a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="7" r="3"/></g></svg>
                         <span class="font-medium text-sm">Profile Info</span>
                     </a>

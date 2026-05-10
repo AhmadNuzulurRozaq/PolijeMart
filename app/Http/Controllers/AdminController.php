@@ -16,7 +16,8 @@ class AdminController extends Controller
     {
         $total = Barang::count();
         $order = Penjualan::count();
-        return view('admin.dashboard', compact(['total', 'order']));
+        $category = Kategori::count();
+        return view('admin.dashboard', compact(['total', 'order', 'category']));
     }
 
     public function inventory()

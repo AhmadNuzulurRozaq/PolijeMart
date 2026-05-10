@@ -16,8 +16,10 @@
                 
                 <!-- Kiri: Logo & Branding -->
                 <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity">
-                    <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-10 sm:w-12 drop-shadow-md">
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-white tracking-wide hidden sm:block">POLIJE MART</h3>
+                    <a href="{{ route('customer.index') }}" class="flex items-center gap-3">
+                        <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-10 sm:w-12 drop-shadow-md">
+                        <h3 class="text-xl sm:text-2xl font-extrabold text-white tracking-wide hidden sm:block">POLIJE MART</h3>
+                    </a>
                 </div>
 
                 <!-- Tengah: Search Bar (Hidden di layar sangat kecil, muncul di Tablet/Desktop) -->
@@ -63,7 +65,7 @@
                                 <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email ?? 'user@email.com' }}</p>
                             </div>
 
-                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-[#069BC0] hover:bg-slate-50 transition-colors">
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-[#069BC0] hover:bg-slate-50 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12a5 5 0 1 0 0-10a5 5 0 0 0 0 10m-7 9a7 7 0 1 1 14 0"/></svg>
                                 Akun Saya
                             </a>
@@ -100,7 +102,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-8 grayscale opacity-70">
-                <span class="font-bold text-lg tracking-wide text-white">POLIJE MART</span>
+                <span class="italic text-xs tracking-wide text-white">Sistem Informasi Penjualan Polije Mart <br>
+                    Open Source IV | v1-2026.05
+                </span>
             </div>
             <div class="text-sm font-medium">
                 &copy; {{ date('Y') }} Polije Mart. All Rights Reserved.

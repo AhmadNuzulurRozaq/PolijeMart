@@ -29,9 +29,29 @@ new class extends Component
 ?>
 
 <div class="w-full max-w-7xl mx-auto">
+    @if(session('status'))
+        <div id="alert-status" class="mb-6 flex items-center justify-between p-4 text-sm font-semibold text-green-800 border border-green-200 rounded-xl bg-green-50 shadow-sm transition-opacity duration-500 ease-in-out">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m10 16.4l-4-4L7.4 11l2.6 2.6L16.6 7L18 8.4z"/></svg>
+                {{ session('status') }}
+            </div>
+            <button type="button" onclick="document.getElementById('alert-status').style.display='none'" class="text-green-600 hover:text-green-800 focus:outline-none transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <script>
+            setTimeout(() => {
+                const alert = document.getElementById('alert-status');
+                if (alert) {
+                    alert.classList.add('opacity-0');
+                    setTimeout(() => alert.remove(), 500); // Menghapus elemen setelah animasi transisi fade-out selesai
+                }
+            }, 3000); // Memulai animasi menghilang setelah 1000 milidetik (1 detik)
+        </script>
+    @endif
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">INVENTORY</h1>
+            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">KELOLA INVENTORI</h1>
             <p class="text-sm text-slate-500 mt-1 font-medium">Total: <span class="text-[#1C4E80] font-bold">{{ $total }}</span> Item</p>
         </div>
         
@@ -85,11 +105,11 @@ new class extends Component
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z" /></svg>
                                 </a>
                                 
-                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ addslashes(str_replace(["\r", "\n"], " ", $item->deskripsi)) }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" /><path d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" /></g></svg>
                                 </button>
 
-                                <form action="{{ route('admin.destroyData', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');" class="inline-block">
+                                <form action="{{ route('admin.destroyData', $item->id) }}" method="POST" class="inline-block form-delete">
                                     @csrf
                                     @method('delete')
                                     <button class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
@@ -153,6 +173,10 @@ new class extends Component
                         <p class="text-sm font-medium text-slate-500">Stok</p>
                         <h3 id="modalStok" class="col-span-2 font-bold"></h3>
                     </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Deskripsi</p>
+                        <h3 id="modalDeskripsi" class="col-span-2 font-bold"></h3>
+                    </div>
                     <div class="mt-2">
                         <p class="text-sm font-medium text-slate-500 mb-2">Gambar Produk</p>
                         <div class="bg-slate-50 rounded-xl border border-slate-200 p-2 flex justify-center items-center min-h-[150px]">
@@ -182,7 +206,7 @@ new class extends Component
             }
         });
 
-        function showDetailModal(kode, nama, kategori, harga, stok, imageUrl) {
+        function showDetailModal(kode, nama, kategori, harga, stok, deskripsi, imageUrl) {
             // Pengaman ekstra jika modal belum pindah ke body
             if (detailModal.parentNode !== document.body) {
                 document.body.appendChild(detailModal);
@@ -194,6 +218,7 @@ new class extends Component
             document.getElementById('modalKategori').innerText = kategori;
             document.getElementById('modalHarga').innerText = harga;
             document.getElementById('modalStok').innerText = stok;
+            document.getElementById('modalDeskripsi').innerText = deskripsi;
             
             if(imageUrl) {
                 imgElement.src = imageUrl;

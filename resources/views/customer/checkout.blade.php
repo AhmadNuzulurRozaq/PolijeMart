@@ -88,7 +88,7 @@
 
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-base font-semibold text-gray-800">Total Pembayaran</span>
-                        <span class="text-lg font-bold text-indigo-600">{{ number_format($total_pembayaran,0,',','.') }}</span>
+                        <span class="text-lg font-bold text-[#1C4E80]">{{ number_format($total_pembayaran,0,',','.') }}</span>
                     </div>
 
                     <form action="{{ route('customer.checkoutStore') }}" method="POST">
@@ -96,7 +96,7 @@
                         <input type="hidden" name="barang_id" value="{{ $product->id }}">
                         <input type="hidden" name="jumlah" value="{{ $jumlah }}">
                         <input type="hidden" name="total_bayar" value="{{ $total_pembayaran }}">
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <button type="submit" class="w-full bg-[#1C4E80] hover:bg-[#113253] text-white font-semibold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 cursor-pointer">
                             Buat Pesanan
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
