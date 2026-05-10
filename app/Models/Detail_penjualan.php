@@ -15,4 +15,8 @@ class Detail_penjualan extends Model
         'harga',
         'subtotal',
     ];
+
+    public function barang(){
+        return $this->belongsTo(Barang::class, 'barang_id');
+    }
 }

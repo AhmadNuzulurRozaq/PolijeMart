@@ -23,14 +23,13 @@ class UserController extends Controller
     {
 
         $product = Barang::findOrFail($id);
-        $kategori = Kategori::get();
         return view('customer.detail', compact('product'));
     }
 
     public function manageProduct()
     {
 
-        $orders = Penjualan::with('detail_penjualans')
+        $orders = Penjualan::with(['detail_penjualans.barang'])
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
@@ -74,7 +73,6 @@ class UserController extends Controller
 
             DB::commit();
             return redirect()->route('customer.manageProduct')->with('status', 'Pesanan Berhasil di Proses');
-
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

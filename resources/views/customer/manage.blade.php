@@ -36,7 +36,7 @@
                         <td class="p-4 text-sm">
                             @foreach($item->detail_penjualans as $detail)
                                 <div class="font-bold text-slate-800">
-                                    {{ $detail->barang ? $detail->barang->nama_barang : 'Produk Telah Dihapus' }}
+                                    {{ $detail->barang?->nama_barang ?? 'Produk Telah Dihapus' }}
                                     <span class="text-xs text-slate-400 font-normal">x{{ $detail->jumlah }}</span>
                                 </div>
                             @endforeach

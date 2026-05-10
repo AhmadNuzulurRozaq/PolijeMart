@@ -29,7 +29,6 @@ new class extends Component
 ?>
 
 <div class="w-full max-w-7xl mx-auto">
-    <!-- Header Section -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
             <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">INVENTORY</h1>
@@ -51,7 +50,6 @@ new class extends Component
         </div>
     </div>
 
-    <!-- Table Section -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
         <div class="overflow-x-auto">
             <table class="w-full text-left whitespace-nowrap">
@@ -87,8 +85,7 @@ new class extends Component
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z" /></svg>
                                 </a>
                                 
-                                <!-- Tombol Show Detail Data dilempar ke fungsi JS -->
-                                <button onclick="showDetailModal('{{ $item->kode_barang }}', '{{ $item->nama_barang }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" /><path d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" /></g></svg>
                                 </button>
 
@@ -116,7 +113,6 @@ new class extends Component
             </table>
         </div>
         
-        <!-- Pagination -->
         @if($barang->hasPages())
         <div class="p-4 border-t border-slate-100 bg-slate-50">
             {{ $barang->links() }}
@@ -124,61 +120,75 @@ new class extends Component
         @endif
     </div>
 
-    <!-- Modal Detail -->
-    <div id="detailModal" class="fixed inset-0 z-[60] items-center justify-center hidden bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0 flex">
-        <div id="modalContent" class="w-[90%] md:w-[500px] max-h-[90vh] overflow-y-auto p-6 bg-white rounded-2xl shadow-2xl transition-all duration-300 ease-in-out opacity-0 scale-95 transform">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-extrabold text-[#1C4E80]">DETAIL PRODUK</h2>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors p-1 bg-slate-100 hover:bg-red-50 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <hr class="border-slate-100 mb-6">
+    <div wire:ignore>
+        <div id="detailModal" class="fixed inset-0 z-[9999] items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0 hidden">
             
-            <div class="flex flex-col gap-4 text-slate-700">
-                <div class="grid grid-cols-3 gap-2">
-                    <p class="text-sm font-medium text-slate-500">Kode Barang</p>
-                    <h3 id="modalKode" class="col-span-2 font-bold font-mono"></h3>
+            <div id="modalContent" class="w-[90%] md:w-[500px] max-h-[90vh] overflow-y-auto p-6 bg-white rounded-2xl shadow-2xl transition-all duration-300 ease-in-out opacity-0 scale-95 transform">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-extrabold text-[#1C4E80]">DETAIL PRODUK</h2>
+                    <button type="button" onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors p-1 bg-slate-100 hover:bg-red-50 rounded-full cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
                 </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <p class="text-sm font-medium text-slate-500">Nama Produk</p>
-                    <h3 id="modalNama" class="col-span-2 font-bold text-lg"></h3>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <p class="text-sm font-medium text-slate-500">Kategori</p>
-                    <h3 id="modalKategori" class="col-span-2 font-semibold"></h3>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <p class="text-sm font-medium text-slate-500">Harga</p>
-                    <h3 id="modalHarga" class="col-span-2 font-extrabold text-[#15C11B]"></h3>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <p class="text-sm font-medium text-slate-500">Stok</p>
-                    <h3 id="modalStok" class="col-span-2 font-bold"></h3>
-                </div>
-                <div class="mt-2">
-                    <p class="text-sm font-medium text-slate-500 mb-2">Gambar Produk</p>
-                    <div class="bg-slate-50 rounded-xl border border-slate-200 p-2 flex justify-center items-center min-h-[150px]">
-                        <img id="modalGambar" src="" alt="Gambar Produk" class="hidden max-h-[200px] object-contain rounded-lg">
-                        <span id="noGambarText" class="text-slate-400 text-sm font-medium">Tidak ada gambar</span>
+                <hr class="border-slate-100 mb-6">
+                
+                <div class="flex flex-col gap-4 text-slate-700">
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Kode Barang</p>
+                        <h3 id="modalKode" class="col-span-2 font-bold font-mono"></h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Nama Produk</p>
+                        <h3 id="modalNama" class="col-span-2 font-bold text-lg"></h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Kategori</p>
+                        <h3 id="modalKategori" class="col-span-2 font-semibold"></h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Harga</p>
+                        <h3 id="modalHarga" class="col-span-2 font-extrabold text-[#15C11B]"></h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <p class="text-sm font-medium text-slate-500">Stok</p>
+                        <h3 id="modalStok" class="col-span-2 font-bold"></h3>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-sm font-medium text-slate-500 mb-2">Gambar Produk</p>
+                        <div class="bg-slate-50 rounded-xl border border-slate-200 p-2 flex justify-center items-center min-h-[150px]">
+                            <img id="modalGambar" src="" alt="Gambar Produk" class="hidden max-h-[200px] object-contain rounded-lg">
+                            <span id="noGambarText" class="text-slate-400 text-sm font-medium">Tidak ada gambar</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button onclick="closeModal()" class="w-full mt-8 px-4 py-3 text-white font-semibold bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors shadow-md">
-                Tutup Detail
-            </button>
+                <button type="button" onclick="closeModal()" class="w-full mt-8 px-4 py-3 text-white font-semibold bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors shadow-md cursor-pointer">
+                    Tutup Detail
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Script Kontrol Modal -->
     <script>
         const detailModal = document.getElementById('detailModal');
         const modalContent = document.getElementById('modalContent');
         const imgElement = document.getElementById('modalGambar');
         const noImgText = document.getElementById('noGambarText');
 
+        // FUNGI UTAMA: Teleport (pindahkan) modal ke <body> agar terbebas dari jeratan CSS Transform pada parent.
+        document.addEventListener("DOMContentLoaded", () => {
+            if (detailModal && detailModal.parentNode !== document.body) {
+                document.body.appendChild(detailModal);
+            }
+        });
+
         function showDetailModal(kode, nama, kategori, harga, stok, imageUrl) {
+            // Pengaman ekstra jika modal belum pindah ke body
+            if (detailModal.parentNode !== document.body) {
+                document.body.appendChild(detailModal);
+            }
+            
+            // Isi Data
             document.getElementById('modalKode').innerText = kode;
             document.getElementById('modalNama').innerText = nama;
             document.getElementById('modalKategori').innerText = kategori;
@@ -194,8 +204,10 @@ new class extends Component
                 noImgText.classList.remove('hidden');
             }
 
-            // Animasi masuk
+            // Animasi Masuk (Tampilkan block dulu, baru opacity)
             detailModal.classList.remove('hidden');
+            detailModal.classList.add('flex'); // Pakai flex agar otomatis align center
+            
             setTimeout(() => {
                 detailModal.classList.remove('opacity-0');
                 modalContent.classList.remove('opacity-0', 'scale-95');
@@ -203,15 +215,17 @@ new class extends Component
         }
 
         function closeModal() {
-            // Animasi keluar
+            // Animasi Keluar
             detailModal.classList.add('opacity-0');
             modalContent.classList.add('opacity-0', 'scale-95');
+            
             setTimeout(() => {
                 detailModal.classList.add('hidden');
+                detailModal.classList.remove('flex'); // Matikan flex agar benar-benar tersembunyi
             }, 300);
         }
 
-        // Tutup jika background gelap diklik
+        // Tutup jika area background blur di klik
         detailModal.addEventListener('click', function(e) {
             if(e.target === detailModal) {
                 closeModal();
