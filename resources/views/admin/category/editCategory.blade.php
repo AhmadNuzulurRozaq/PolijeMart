@@ -10,8 +10,8 @@
         @method('put')
 
         <div class="flex flex-col gap-2 md:col-span-2">
-            <label for="namaBarang" class="text-sm font-bold text-slate-700">Nama Produk <span class="text-red-500">*</span></label>
-            <input type="text" name="nama_barang" id="namaBarang" value="{{ old('nama_kategori', $kategori->nama_kategori) }}" required placeholder="Masukkan nama kategori..."
+            <label for="namaKategori" class="text-sm font-bold text-slate-700">Nama Kategori <span class="text-red-500">*</span></label>
+            <input type="text" name="nama_kategori" id="namaKategori" value="{{ old('nama_kategori', $kategori->nama_kategori) }}" required placeholder="Masukkan nama kategori..."
                 class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
                     @error('nama_kategori')
                         border-red-500 focus:ring-2 focus:ring-red-200

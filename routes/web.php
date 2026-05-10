@@ -7,8 +7,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    if(Auth::check()) {
-        if (Auth::user()->role == "admin"){
+    if (Auth::check()) {
+        if (Auth::user()->role == "admin") {
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('customer.index');
@@ -26,7 +26,7 @@ Route::get('/', function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::middleware('admin')->group(function (){
+Route::middleware('admin')->group(function () {
     // ROUTE BARANG + DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
@@ -43,17 +43,19 @@ Route::middleware('admin')->group(function (){
     Route::post('/category/storeCategory', [AdminController::class, 'storeCategory'])->name('admin.storeCategory');
     Route::get('/category/editCategory/{id}', [AdminController::class, 'editCategory'])->name('admin.editCategory');
     Route::put('/category/updateCategory/{id}', [AdminController::class, 'updateCategory'])->name('admin.updateCategory');
-    Route::delete('/category/destroyCategory/{id)', [AdminController::class, 'destroyCategory'])->name('admin.destroyCategory');
+    Route::delete('/category/destroyCategory/{id}', [AdminController::class, 'destroyCategory'])->name('admin.destroyCategory');
 
     Route::get('/orders', [AdminController::class, 'manageOrder'])->name('admin.manageOrder');
     Route::post('/order/{id}/selesai', [AdminController::class, 'completeOrder'])->name('admin.completeOrder');
 });
 
-Route::middleware('user')->group(function (){
+Route::middleware('user')->group(function () {
     Route::get('/customer', [UserController::class, 'index'])->name('customer.index');
-    Route::get('/customer/detail', [UserController::class, 'detailProduct'])->name('customer.detailProduct');
+    Route::get('/customer/detail/{id}', [UserController::class, 'detailProduct'])->name('customer.detailProduct');
+    Route::get('/customer/detail/checkout/{id}', [UserController::class, 'checkoutProduct'])->name('customer.checkoutProduct');
+    Route::post('/customer/detail/checkout/store', [UserController::class, 'checkoutStore'])->name('customer.chekoutStore');
     Route::get('/customer/manage', [UserController::class, 'manageProduct'])->name('customer.manageProduct');
     Route::get('/customer/cart', [UserController::class, 'cartProduct'])->name('customer.cartProduct');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
