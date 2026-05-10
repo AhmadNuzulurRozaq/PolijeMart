@@ -11,6 +11,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <div class="lg:col-span-8 space-y-6">
+
+                @if (session('error'))
+                    <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <h2 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pengiriman (ReadOnly)</h2>
@@ -85,11 +91,11 @@
                         <span class="text-lg font-bold text-indigo-600">{{ number_format($total_pembayaran,0,',','.') }}</span>
                     </div>
 
-                    <form action="{{ route('customer.chekoutStore') }}" method="POST">
+                    <form action="{{ route('customer.checkoutStore') }}" method="POST">
                         @csrf
                         <input type="hidden" name="barang_id" value="{{ $product->id }}">
                         <input type="hidden" name="jumlah" value="{{ $jumlah }}">
-                        <input type="hidden" name="total_pembayaran" value="{{ $total_pembayaran }}">
+                        <input type="hidden" name="total_bayar" value="{{ $total_pembayaran }}">
                         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
                             Buat Pesanan
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>

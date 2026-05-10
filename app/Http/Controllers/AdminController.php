@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\Penjualan;
+use Exception;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -178,14 +180,34 @@ class AdminController extends Controller
         return view('admin.orders.order');
     }
 
-    // public function completeOrder($id){
-        
-    //     $penjualan = Penjualan::findOrFail($id);
+    public function completeOrder($id){
 
-    //     $penjualan->update([
-    //         'status' => 'selesai',
-    //     ]);
+        DB::beginTransaction();
 
-    //     return redirect()->back()->with('status', 'Status pesanan berhasil diambil');
-    // }
+        try{
+            $penjualan = Penjualan::with('detail_penjualans')->findOrFail($id);
+
+            $penjualan->update([
+                'status' => 'selesai',
+                'batas_waktu' => now()->addHour(24),
+            ]);
+
+            foreach($penjualan->detail_penjualans as $detail){
+                $barang = Barang::findOrFail($detail->barang_id);
+
+                if($barang->stok < $detail->jumlah){
+                    throw new Exception('Stok barang tidak mencukupi !');
+                }
+
+                $barang->decrement('stok', $detail->jumlah);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('status', 'Pesanan berhasil diambil !');
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
+        }
+    }
 }

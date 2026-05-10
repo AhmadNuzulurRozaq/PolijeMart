@@ -3,6 +3,8 @@
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Penjualan;
+use App\Models\Barang;
+use Carbon\Carbon;
 
 new class extends Component
 {
@@ -11,16 +13,25 @@ new class extends Component
     public $search = '';
 
     public function updatingSearch(){
-
         $this->resetPage();
     }
 
     public function selesaikanPesanan($id){
-        $order = Penjualan::find($id);
+        $order = Penjualan::with('detail_penjualans')->find($id);
 
         if ($order && $order->status == 'proses') {
+
+            foreach ($order->detail_penjualans as $detail) {
+                $barang = Barang::find($detail->barang_id);
+
+                if($barang){
+                    $barang->decrement('stok', $detail->jumlah);
+                }
+            }
+
             $order->update([
                 'status' => 'selesai',
+                'batas_waktu' => now()->addHours(24), // Perbaikan: addHours pakai 's'
             ]);
         }
     }
@@ -35,13 +46,26 @@ new class extends Component
 
     public function with(): array
     {
-        $expiredOrder = Penjualan::where('status', 'proses')
-                        ->where('batas_waktu', '<', \Carbon\Carbon::now())
+        // Perbaikan: Ubah 'proses' menjadi 'selesai'
+        $expiredOrder = Penjualan::with('detail_penjualans')
+                        ->where('status', 'selesai') 
+                        ->whereNotNull('batas_waktu')
+                        ->where('batas_waktu', '<', Carbon::now())
                         ->get();
 
         foreach ($expiredOrder as $order) {
+            
+            foreach ($order->detail_penjualans as $detail){
+                $barang = Barang::find($detail->barang_id);
+
+                if($barang){
+                    $barang->increment('stok', $detail->jumlah);
+                }
+            }
+
             $order->update([
                 'status' => 'batal',
+                'batas_waktu' => null, // Reset batas waktu
             ]);
         }
 
@@ -50,7 +74,7 @@ new class extends Component
                 $query->whereHas('user', function($query) {
                     $query->where('name', 'like', '%' . $this->search . '%');
                 });
-            })->paginate(10),
+            })->latest()->paginate(10),
             
             'total' => Penjualan::count(),
         ];
@@ -60,7 +84,6 @@ new class extends Component
 ?>
 
 <div class="w-full max-w-7xl mx-auto">
-    <!-- Header Section -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
             <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">MANAGE ORDER</h1>
@@ -77,7 +100,6 @@ new class extends Component
         </div>
     </div>
 
-    <!-- Table Section -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
         <div class="overflow-x-auto">
             <table class="w-full text-left whitespace-nowrap">
@@ -101,32 +123,35 @@ new class extends Component
                         <td class="p-4 font-bold text-[#1C4E80]">Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                         <td class="p-4 text-center">
                             @if($item->status == 'proses')
-                                <span class="bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide">DIPROSES</span>
+                                <span class="bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">DIPROSES</span>
                             @elseif($item->status == 'selesai')
-                                <span class="bg-green-50 text-green-600 border border-green-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide">SELESAI</span>
+                                <span class="bg-green-50 text-green-600 border border-green-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">SIAP DIAMBIL</span>
                             @else
-                                <span class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide">BATAL</span>
+                                <span class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">BATAL</span>
                             @endif
                         </td>
                         
                         <td class="p-4 text-center">
-                            @if($item->status == 'proses')
-                                <span class="waktu-mundur font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md" data-waktu="{{ $item->batas_waktu }}">Menghitung...</span>
+                            @if($item->status == 'selesai' && $item->batas_waktu)
+                                <span class="waktu-mundur font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md" data-waktu="{{ \Carbon\Carbon::parse($item->batas_waktu)->format('Y-m-d\TH:i:s') }}">Menghitung...</span>
+                            @elseif($item->status == 'proses')
+                                <span class="text-slate-400 text-xs italic">Menunggu diproses</span>
                             @else
-                                <span class="text-slate-400 font-bold">-</span>
+                                <span class="text-slate-300 font-bold">-</span>
                             @endif
                         </td>
                         
                         <td class="p-4">
-                            <div class="flex justify-center">
+                            <div class="flex justify-center gap-2">
                                 @if($item->status == 'proses')
-                                    <button type="button" wire:click="selesaikanPesanan({{ $item->id }})" wire:confirm="Apakah pesanan ini sudah diambil dan ingin diselesaikan?" class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12"/><path d="m17.608 9l-7.726 7.726L6 12.093l1.511-1.31l2.476 3.01l6.207-6.207z"/></g></svg>
-                                        Selesai
+                                    <button type="button" wire:click="selesaikanPesanan({{ $item->id }})" wire:confirm="Apakah pesanan ini sudah siap diambil untuk diselesaikan?" class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     </button>
-                                @else
+                                @endif
+
+                                @if(in_array($item->status, ['selesai', 'batal']))
                                 <button type="button" wire:click="hapusPesanan({{ $item->id }})" wire:confirm="Apakah Anda yakin ingin menghapus data pesanan ini?" class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
                                 </button>
                                 @endif
                             </div>
@@ -146,7 +171,6 @@ new class extends Component
             </table>
         </div>
         
-        <!-- Pagination -->
         @if($penjualan->hasPages())
         <div class="p-4 border-t border-slate-100 bg-slate-50">
             {{ $penjualan->links() }}
@@ -154,7 +178,6 @@ new class extends Component
         @endif
     </div>
 
-    <!-- Script Countdown Timer -->
     <script>
         setInterval(function() {
             const timers = document.querySelectorAll('.waktu-mundur');

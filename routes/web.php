@@ -53,7 +53,7 @@ Route::middleware('user')->group(function () {
     Route::get('/customer', [UserController::class, 'index'])->name('customer.index');
     Route::get('/customer/detail/{id}', [UserController::class, 'detailProduct'])->name('customer.detailProduct');
     Route::get('/customer/detail/checkout/{id}', [UserController::class, 'checkoutProduct'])->name('customer.checkoutProduct');
-    Route::post('/customer/detail/checkout/store', [UserController::class, 'checkoutStore'])->name('customer.chekoutStore');
+    Route::post('/customer/detail/checkout/store', [UserController::class, 'checkoutStore'])->name('customer.checkoutStore');
     Route::get('/customer/manage', [UserController::class, 'manageProduct'])->name('customer.manageProduct');
     Route::get('/customer/cart', [UserController::class, 'cartProduct'])->name('customer.cartProduct');
 });
