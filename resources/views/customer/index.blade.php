@@ -61,7 +61,10 @@
     </div>
 
     <div>
-        <h2 class="font-extrabold text-lg sm:text-xl text-slate-800 tracking-tight mb-6 border-b-2 border-[#069BC0] inline-block pb-1">Produk Unggulan</h2>
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="font-extrabold text-lg sm:text-xl text-slate-800 tracking-tight border-b-2 border-[#069BC0] inline-block pb-1">Produk Unggulan</h2>
+            <a href="{{ route('customer.allProduct') }}" class="text-sm font-bold text-[#069BC0] hover:text-[#1C4E80] transition-colors hidden sm:block">Lihat Semua Produk</a>
+        </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             @forelse ($product as $produk)
@@ -105,6 +108,11 @@
                     <p class="text-slate-500 font-medium text-lg">Belum ada produk yang tersedia saat ini.</p>
                 </div>
             @endforelse
+        </div>
+        
+        <!-- Tombol Tampilkan Semua di Bagian Bawah -->
+        <div class="mt-10 flex justify-center">
+            <a href="{{ route('customer.allProduct') }}" class="px-8 py-3 bg-[#069BC0] text-white font-bold rounded-xl shadow-md hover:bg-[#1C4E80] hover:-translate-y-1 transition-all duration-300">Tampilkan Semua Produk</a>
         </div>
     </div>
 

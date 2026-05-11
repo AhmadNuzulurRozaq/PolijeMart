@@ -73,7 +73,7 @@ new class extends Component
         }
 
         return [
-            'penjualan' => Penjualan::with('user')->when($this->search, function($query){
+            'penjualan' => Penjualan::with(['user', 'detail_penjualans.barang'])->when($this->search, function($query){
                 $query->whereHas('user', function($query) {
                     $query->where('name', 'like', '%' . $this->search . '%');
                 });
@@ -111,6 +111,7 @@ new class extends Component
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">NAMA PEMBELI</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TANGGAL</th>
+                        <th class="p-4 text-sm font-semibold tracking-wide">DETAIL BARANG</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TOTAL BELANJA</th>
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">STATUS</th>
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">BATAS AMBIL</th>
@@ -123,6 +124,14 @@ new class extends Component
                         <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
                         <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
                         <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d M Y, H:i') }}</td>
+                        <td class="p-4 text-sm">
+                            @foreach($item->detail_penjualans as $detail)
+                                <div class="font-bold text-slate-800">
+                                    {{ $detail->barang?->nama_barang ?? 'Produk Telah Dihapus' }}
+                                    <span class="text-xs text-slate-400 font-normal">x{{ $detail->jumlah }}</span>
+                                </div>
+                            @endforeach
+                        </td>
                         <td class="p-4 font-bold text-[#1C4E80]">Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                         <td class="p-4 text-center">
                             @if($item->status == 'proses')
@@ -163,7 +172,7 @@ new class extends Component
                                                 $wire.selesaikanPesanan({{ $item->id }});
                                             }
                                         })
-                                    " class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5">
+                                    " class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5 cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     </button>
                                 @endif
@@ -184,7 +193,7 @@ new class extends Component
                                                 $wire.hapusPesanan({{ $item->id }});
                                             }
                                         })
-                                    " class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                    " class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
                                     </button>
                                 @endif
@@ -194,7 +203,7 @@ new class extends Component
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center p-8 text-slate-500">
+                        <td colspan="8" class="text-center p-8 text-slate-500">
                             <div class="flex flex-col items-center justify-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="text-slate-300" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2l4-4"/></svg>
                                 <span class="font-medium">Tidak ada order yang masuk saat ini</span>

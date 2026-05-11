@@ -13,75 +13,191 @@ class BarangSeeder extends Seeder
      */
     public function run(): void
     {
-        $dataPool = [
-            1 => [ // Makanan
-                ['nama' => 'Indomie Goreng Spesial', 'desc' => 'Mie instan goreng favorit.'],
-                ['nama' => 'Chitato Sapi Panggang', 'desc' => 'Keripik kentang rasa sapi panggang.'],
-                ['nama' => 'Sari Roti Gandum', 'desc' => 'Roti tawar gandum sehat dan bergizi.'],
-                ['nama' => 'Taro Net Seaweed', 'desc' => 'Snack ringan renyah rasa rumput laut.'],
+        $barangs = [
+            [
+                'kode_barang' => 'TF-SGM-01',
+                'nama_barang' => 'Nasi Goreng Spesial',
+                'deskripsi' => 'Nasi goreng dengan telur, ayam, dan sayuran segar. Rasa otentik Indonesia.',
+                'stok' => 13,
+                'kategori_id' => 4,
+                'harga' => 10000,
+                'image' => 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800',
             ],
-            2 => [ // Minuman
-                ['nama' => 'Aqua Botol 600ml', 'desc' => 'Air mineral pegunungan asli.'],
-                ['nama' => 'Pocari Sweat 500ml', 'desc' => 'Minuman isotonik pengganti ion tubuh.'],
-                ['nama' => 'Teh Pucuk Harum 350ml', 'desc' => 'Minuman teh melati segar dalam botol.'],
-                ['nama' => 'Ultra Milk Coklat 250ml', 'desc' => 'Susu UHT rasa coklat.'],
+            [
+                'kode_barang' => 'TF-MIE-02',
+                'nama_barang' => 'Mie Ayam Bakso',
+                'deskripsi' => 'Mie ayam dengan bakso sapi pilihan dan kuah kaldu yang gurih.',
+                'stok' => 25,
+                'kategori_id' => 4,
+                'harga' => 12000,
+                'image' => 'https://images.unsplash.com/photo-1552611052-33e04de081de?w=800',
             ],
-            3 => [ // ATK
-                ['nama' => 'Buku Tulis Sinar Dunia 38 Lembar', 'desc' => 'Buku tulis bergaris kualitas premium.'],
-                ['nama' => 'Pulpen Faster C600 Hitam', 'desc' => 'Pulpen tinta hitam anti macet.'],
-                ['nama' => 'Pensil 2B Faber Castell', 'desc' => 'Pensil khusus ujian komputer.'],
-                ['nama' => 'Kertas HVS A4 PaperOne', 'desc' => 'Kertas print A4 80gsm.'],
+            [
+                'kode_barang' => 'TF-SAT-03',
+                'nama_barang' => 'Sate Ayam Madura',
+                'deskripsi' => 'Sate ayam dengan bumbu kacang khas Madura yang lezat.',
+                'stok' => 30,
+                'kategori_id' => 4,
+                'harga' => 15000,
+                'image' => 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=800',
             ],
-            4 => [ // Sayuran
-                ['nama' => 'Bayam Hijau Segar', 'desc' => 'Bayam hijau hidroponik kaya zat besi.'],
-                ['nama' => 'Wortel Brastagi', 'desc' => 'Wortel manis dan renyah cocok untuk sayur.'],
-                ['nama' => 'Brokoli Hijau', 'desc' => 'Brokoli segar kaya vitamin.'],
-                ['nama' => 'Tomat Merah', 'desc' => 'Tomat merah segar untuk bumbu masakan.'],
+            [
+                'kode_barang' => 'TF-GAD-04',
+                'nama_barang' => 'Gado-Gado Jakarta',
+                'deskripsi' => 'Sayuran segar dengan bumbu kacang dan kerupuk.',
+                'stok' => 20,
+                'kategori_id' => 4,
+                'harga' => 11000,
+                'image' => 'https://images.unsplash.com/photo-1541518763669-27fefb4b0728?w=800',
             ],
-            5 => [ // Buah
-                ['nama' => 'Apel Fuji', 'desc' => 'Apel manis, garing, dan segar.'],
-                ['nama' => 'Pisang Cavendish Sunpride', 'desc' => 'Pisang kuning mulus kualitas ekspor.'],
-                ['nama' => 'Jeruk Medan', 'desc' => 'Jeruk manis dengan banyak kandungan air.'],
-                ['nama' => 'Mangga Harum Manis', 'desc' => 'Mangga matang pohon rasanya sangat manis.'],
+            [
+                'kode_barang' => 'TF-SOT-05',
+                'nama_barang' => 'Soto Ayam Lamongan',
+                'deskripsi' => 'Soto ayam dengan kuah kuning yang segar dan koya.',
+                'stok' => 18,
+                'kategori_id' => 4,
+                'harga' => 13000,
+                'image' => 'https://images.unsplash.com/photo-1547592166-23acbe346499?w=800',
             ],
-            6 => [ // Aksesoris
-                ['nama' => 'Gelang Paracord Hitam', 'desc' => 'Gelang tali gunung yang sangat kuat.'],
-                ['nama' => 'Topi Baseball Polos Hitam', 'desc' => 'Topi kasual dengan bahan canvas tebal.'],
-                ['nama' => 'Kacamata Anti Radiasi', 'desc' => 'Kacamata pelindung dari layar monitor.'],
-                ['nama' => 'Gantungan Kunci Kulit', 'desc' => 'Gantungan kunci elegan desain simpel.'],
+            [
+                'kode_barang' => 'MN-ESJ-06',
+                'nama_barang' => 'Es Jeruk Segar',
+                'deskripsi' => 'Minuman jeruk peras segar tanpa pemanis buatan.',
+                'stok' => 50,
+                'kategori_id' => 5,
+                'harga' => 8000,
+                'image' => 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=800',
             ],
-            7 => [ // Elektronik
-                ['nama' => 'Flashdisk SanDisk Cruzer 32GB', 'desc' => 'Penyimpanan data portabel.'],
-                ['nama' => 'Mouse Wireless Logitech M170', 'desc' => 'Mouse tanpa kabel yang responsif.'],
-                ['nama' => 'Kabel Data Baseus Type C', 'desc' => 'Kabel fast charging 3A awet.'],
-                ['nama' => 'Earphone TWS Robot', 'desc' => 'Earphone bluetooth dengan suara jernih.'],
-            ]
+            [
+                'kode_barang' => 'MN-EST-07',
+                'nama_barang' => 'Es Teh Manis',
+                'deskripsi' => 'Teh manis dingin yang menyegarkan.',
+                'stok' => 60,
+                'kategori_id' => 5,
+                'harga' => 5000,
+                'image' => 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800',
+            ],
+            [
+                'kode_barang' => 'MN-KOF-08',
+                'nama_barang' => 'Kopi Hitam',
+                'deskripsi' => 'Kopi hitam pekat tanpa gula.',
+                'stok' => 40,
+                'kategori_id' => 5,
+                'harga' => 7000,
+                'image' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+            ],
+            [
+                'kode_barang' => 'MN-JUS-09',
+                'nama_barang' => 'Jus Alpukat',
+                'deskripsi' => 'Jus alpukat segar dengan susu dan coklat.',
+                'stok' => 25,
+                'kategori_id' => 5,
+                'harga' => 12000,
+                'image' => 'https://images.unsplash.com/photo-1523294587454-6428b580b67f?w=800',
+            ],
+            [
+                'kode_barang' => 'SN-KRP-10',
+                'nama_barang' => 'Kerupuk Udang',
+                'deskripsi' => 'Kerupuk udang renyah dan gurih.',
+                'stok' => 100,
+                'kategori_id' => 6,
+                'harga' => 3000,
+                'image' => 'https://images.unsplash.com/photo-1621447504864-d8686e12698c?w=800',
+            ],
+            [
+                'kode_barang' => 'SN-PIS-11',
+                'nama_barang' => 'Pisang Goreng',
+                'deskripsi' => 'Pisang goreng crispy dengan taburan keju.',
+                'stok' => 35,
+                'kategori_id' => 6,
+                'harga' => 8000,
+                'image' => 'https://images.unsplash.com/photo-1579954115545-a915b62346eb?w=800',
+            ],
+            [
+                'kode_barang' => 'SN-RES-12',
+                'nama_barang' => 'Resoles Sayur',
+                'deskripsi' => 'Resoles isi sayuran dan daging ayam.',
+                'stok' => 40,
+                'kategori_id' => 6,
+                'harga' => 4000,
+                'image' => 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800',
+            ],
+            [
+                'kode_barang' => 'TF-REN-13',
+                'nama_barang' => 'Rendang Daging',
+                'deskripsi' => 'Rendang daging sapi khas Padang dengan bumbu rempah.',
+                'stok' => 15,
+                'kategori_id' => 4,
+                'harga' => 25000,
+                'image' => 'https://images.unsplash.com/photo-1635437930207-488f97dfdf87?w=800',
+            ],
+            [
+                'kode_barang' => 'TF-AYG-14',
+                'nama_barang' => 'Ayam Goreng Kremes',
+                'deskripsi' => 'Ayam goreng dengan kremes renyah dan sambal.',
+                'stok' => 22,
+                'kategori_id' => 4,
+                'harga' => 18000,
+                'image' => 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800',
+            ],
+            [
+                'kode_barang' => 'TF-BKS-15',
+                'nama_barang' => 'Bakso Urat',
+                'deskripsi' => 'Bakso urat sapi dengan kuah kaldu dan mie.',
+                'stok' => 28,
+                'kategori_id' => 4,
+                'harga' => 14000,
+                'image' => 'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?w=800',
+            ],
+            [
+                'kode_barang' => 'MN-SUS-16',
+                'nama_barang' => 'Susu Coklat',
+                'deskripsi' => 'Susu coklat hangat atau dingin.',
+                'stok' => 45,
+                'kategori_id' => 5,
+                'harga' => 9000,
+                'image' => 'https://images.unsplash.com/photo-1576618148400-f54bed99fcf8?w=800',
+            ],
+            [
+                'kode_barang' => 'SN-LUM-17',
+                'nama_barang' => 'Lumpia Semarang',
+                'deskripsi' => 'Lumpia isi rebung dan udang.',
+                'stok' => 30,
+                'kategori_id' => 6,
+                'harga' => 10000,
+                'image' => 'https://images.unsplash.com/photo-1626074353765-517a681e40be?w=800',
+            ],
+            [
+                'kode_barang' => 'TF-PEK-18',
+                'nama_barang' => 'Pek Cam Ke',
+                'deskripsi' => 'Mie goreng khas китай dengan sayuran.',
+                'stok' => 20,
+                'kategori_id' => 4,
+                'harga' => 13000,
+                'image' => 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=800',
+            ],
+            [
+                'kode_barang' => 'MN-DEJ-19',
+                'nama_barang' => 'Es Degan',
+                'deskripsi' => 'Es kelapa muda segar dengan sirup.',
+                'stok' => 35,
+                'kategori_id' => 5,
+                'harga' => 10000,
+                'image' => 'https://images.unsplash.com/photo-1546173159-315724a31696?w=800',
+            ],
+            [
+                'kode_barang' => 'SN-MAR-20',
+                'nama_barang' => 'Martabak Manis',
+                'deskripsi' => 'Martabak manis dengan topping coklat dan keju.',
+                'stok' => 25,
+                'kategori_id' => 6,
+                'harga' => 15000,
+                'image' => 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800',
+            ],
         ];
 
-        $barangData = [];
-
-        for ($i = 0; $i < 100; $i++) {
-            $kategoriId = rand(1, 7);
-
-            $item = $dataPool[$kategoriId][array_rand($dataPool[$kategoriId])];
-
-            $kodeBarang = 'PRPM-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-
-            $namaUnik = $item['nama'] . ' - Seri ' . rand(100, 999);
-
-            $barangData[] = [
-                'kode_barang' => $kodeBarang,
-                'nama_barang' => $namaUnik,
-                'deskripsi'   => $item['desc'],
-                'stok'        => 300,
-                'kategori_id' => $kategoriId,
-                'harga'       => rand(10, 250) * 1000, // Harga kelipatan ribuan (10.000 s/d 250.000)
-                'image'       => '',
-            ];
-        }
-
-        foreach (array_chunk($barangData, 50) as $chunk) {
-            Barang::insert($chunk);
+        foreach ($barangs as $barang) {
+            Barang::create($barang);
         }
     }
 }

@@ -16,11 +16,7 @@ class KategoriSeeder extends Seeder
         $kategoriList = [
             ['nama_kategori' => 'Makanan'],
             ['nama_kategori' => 'Minuman'],
-            ['nama_kategori' => 'ATK'],
-            ['nama_kategori' => 'Sayuran'],
-            ['nama_kategori' => 'Buah'],
-            ['nama_kategori' => 'Aksesoris'],
-            ['nama_kategori' => 'Elektronik'],
+            ['nama_kategori' => 'Camilan'],
         ];
 
         foreach($kategoriList as $kategori){

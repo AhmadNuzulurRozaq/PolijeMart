@@ -133,7 +133,7 @@
                         @endif
 
                         <div class="flex-1 w-full">
-                            <label for="file-upload" class="flex flex-col justify-center px-6 pt-5 pb-6 border-2 border-slate-200 border-dashed rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer h-full min-h-[148px]">
+                            <label for="file-upload" class="flex flex-col justify-center px-6 pt-5 pb-6 border-2 border-slate-200 border-dashed rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer h-full min-h-[148px]" id="upload-placeholder">
                                 <div class="space-y-1 text-center">
                                     <svg class="mx-auto h-10 w-10 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -143,8 +143,17 @@
                                     </div>
                                     <p class="text-xs text-slate-500">Biarkan kosong jika tidak ingin mengubah</p>
                                 </div>
-                                <input id="file-upload" name="image" type="file" class="sr-only">
                             </label>
+                            
+                            <!-- Tempat Preview Gambar Baru -->
+                            <div id="image-preview-container" class="hidden flex-col items-center justify-center w-full px-6 pt-5 pb-6 border-2 border-slate-200 border-dashed rounded-xl bg-slate-50 h-full min-h-[148px]">
+                                <img id="image-preview" src="" alt="Preview Gambar" class="max-h-32 object-contain rounded-lg mb-3 shadow-sm">
+                                <label for="file-upload" class="cursor-pointer bg-white rounded-md font-medium text-slate-600 hover:text-red-500 px-3 py-1 shadow-sm border border-slate-200 transition-colors text-sm">
+                                    Ganti Gambar
+                                </label>
+                            </div>
+
+                            <input id="file-upload" name="image" type="file" class="sr-only" onchange="previewImage(event)" accept="image/*">
                         </div>
                     </div>
                     @error('image')
@@ -167,5 +176,35 @@
         </form>
     </div>
 </section>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const placeholder = document.getElementById('upload-placeholder');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImage = document.getElementById('image-preview');
+
+        // Mengecek apakah ada file yang diunggah
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                placeholder.classList.add('hidden'); // Sembunyikan ikon upload
+                placeholder.classList.remove('flex'); // Agar display tidak saling timpa dengan Tailwind
+                previewContainer.classList.remove('hidden'); // Tampilkan div preview
+                previewContainer.classList.add('flex');
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewImage.src = "";
+            placeholder.classList.remove('hidden');
+            placeholder.classList.add('flex');
+            previewContainer.classList.add('hidden');
+            previewContainer.classList.remove('flex');
+        }
+    }
+</script>
 
 @endsection

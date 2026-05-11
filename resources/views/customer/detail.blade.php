@@ -166,10 +166,13 @@
                     <button @click="openModalCart = false" class="flex-1 border border-slate-200 bg-white hover:bg-slate-200 text-slate-500 py-3 rounded-xl font-bold text-sm uppercase transition-colors cursor-pointer">
                         Batal
                     </button>
-                    <button @click="window.location.href = '/customer/cart'" 
-                            class="flex-[2] bg-[#1C4E80] text-white py-3 rounded-xl font-extrabold text-sm uppercase tracking-wide shadow-md hover:bg-[#0a233b] hover:-translate-y-0.5 transition-all cursor-pointer">
-                        Tambah ke Keranjang
-                    </button>
+                    <form action="{{ route('customer.cartAdd', $product->id) }}" method="POST" class="flex-[2]">
+                        @csrf
+                        <input type="hidden" name="jumlah" :value="jumlah">
+                        <button type="submit" class="w-full bg-[#1C4E80] text-white py-3 rounded-xl font-extrabold text-sm uppercase tracking-wide shadow-md hover:bg-[#0a233b] hover:-translate-y-0.5 transition-all cursor-pointer">
+                            Tambah ke Keranjang
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

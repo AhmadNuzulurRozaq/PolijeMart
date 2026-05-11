@@ -8,6 +8,8 @@
     <p class="text-sm text-slate-500 mt-2 font-medium">Sebelum melanjutkan, silakan login terlebih dahulu.</p>
 </div>
 
+<x-auth-session-status class="mb-4 text-green-600 font-bold" :status="session('status')" />
+
 <form action="{{ route('login') }}" method="POST" class="space-y-5">
     @csrf
     

@@ -105,14 +105,14 @@ new class extends Component
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z" /></svg>
                                 </a>
                                 
-                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ addslashes(str_replace(["\r", "\n"], " ", $item->deskripsi)) }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ addslashes(str_replace(["\r", "\n"], " ", $item->deskripsi)) }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" /><path d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" /></g></svg>
                                 </button>
 
                                 <form action="{{ route('admin.destroyData', $item->id) }}" method="POST" class="inline-block form-delete">
                                     @csrf
                                     @method('delete')
-                                    <button class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
+                                    <button class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
                                     </button>
                                 </form>

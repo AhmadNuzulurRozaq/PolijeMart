@@ -51,25 +51,27 @@
                     <h2 class="text-lg font-semibold text-gray-800 mb-4">Ringkasan Pesanan</h2>
 
                     @php
-                        $jumlah = request('jumlah',1);
-                        $subtotal = $product->harga * $jumlah;
+                        // subtotal dan checkoutItems sudah dipassing dari Controller
                         $biaya_layanan = 2000;
                         $total_pembayaran = $subtotal + $biaya_layanan;
                     @endphp
 
                     <div class="space-y-4 mb-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                                <img src="{{ $product->image ? asset('storage/' . $product->image) : 'Tidak ada gambar' }}" alt="{{ $product->nama_barang }}" class="w-full h-full object-cover">
+                        @foreach($checkoutItems as $item)
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                                    <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : 'Tidak ada gambar' }}" alt="{{ $item['nama_barang'] }}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-sm font-medium text-gray-800 line-clamp-1">{{ $item['nama_barang'] }}</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Jumlah: {{ $item['jumlah'] }}</p>
+                                </div>
+                                <div class="text-sm font-semibold text-gray-800">
+                                    Rp {{ number_format($item['harga'] * $item['jumlah'], 0, ',', '.') }}
+                                </div>
                             </div>
-                            <div class="flex-1">
-                                <h3 class="text-sm font-medium text-gray-800 line-clamp-1">{{ $product->nama_barang }}</h3>
-                                <p class="text-xs text-gray-500 mt-1">Jumlah: {{ $jumlah }}</p>
-                            </div>
-                            <div class="text-sm font-semibold text-gray-800">
-                                Rp {{ number_format($product->harga,0, ',', '.') }}
-                            </div>
-                        </div>
+                        @endforeach
+                    </div>
 
                     <hr class="border-gray-100 mb-4">
 
@@ -93,8 +95,10 @@
 
                     <form action="{{ route('customer.checkoutStore') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="barang_id" value="{{ $product->id }}">
-                        <input type="hidden" name="jumlah" value="{{ $jumlah }}">
+                        @foreach($checkoutItems as $item)
+                            <input type="hidden" name="barang_id[]" value="{{ $item['id'] }}">
+                            <input type="hidden" name="jumlah[]" value="{{ $item['jumlah'] }}">
+                        @endforeach
                         <input type="hidden" name="total_bayar" value="{{ $total_pembayaran }}">
                         <button type="submit" class="w-full bg-[#1C4E80] hover:bg-[#113253] text-white font-semibold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 cursor-pointer">
                             Buat Pesanan
