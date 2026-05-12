@@ -63,6 +63,12 @@ class UserController extends Controller
         $cart = session()->get('cart', []);
         $jumlah = $request->jumlah ?? 1;
 
+        // Cek apakah jumlah yang dimasukkan melebihi sisa stok yang ada
+        $currentCartJumlah = isset($cart[$id]) ? $cart[$id]['jumlah'] : 0;
+        if (($currentCartJumlah + $jumlah) > $product->stok) {
+            return redirect()->back()->with('error', 'Stok produk tidak mencukupi! Sisa stok: ' . $product->stok);
+        }
+
         if (isset($cart[$id])) {
             $cart[$id]['jumlah'] += $jumlah;
         } else {
@@ -95,6 +101,10 @@ class UserController extends Controller
         $product = Barang::findOrFail($id);
         $jumlah = $request->jumlah ?? 1;
 
+        if ($jumlah > $product->stok) {
+            return redirect()->back()->with('error', 'Stok produk tidak mencukupi! Sisa stok: ' . $product->stok);
+        }
+
         $checkoutItems = [
             [
                 'id' => $product->id,
@@ -122,6 +132,11 @@ class UserController extends Controller
 
         foreach ($selectedItems as $id) {
             if (isset($cart[$id])) {
+                $product = Barang::findOrFail($id);
+                if ($cart[$id]['jumlah'] > $product->stok) {
+                    return redirect()->back()->with('error', 'Stok produk ' . $product->nama_barang . ' tidak mencukupi! Sisa stok: ' . $product->stok);
+                }
+
                 $checkoutItems[] = $cart[$id];
                 $subtotal += $cart[$id]['harga'] * $cart[$id]['jumlah'];
             }
@@ -152,6 +167,10 @@ class UserController extends Controller
                 $barang = Barang::findOrFail($barang_id);
                 $qty = $jumlahs[$index];
                 $sub = $barang->harga * $qty;
+
+                if ($qty > $barang->stok) {
+                    throw new Exception('Stok produk ' . $barang->nama_barang . ' tidak mencukupi! Sisa stok: ' . $barang->stok);
+                }
 
                 Detail_penjualan::create([
                     'penjualan_id' => $penjualan->id,

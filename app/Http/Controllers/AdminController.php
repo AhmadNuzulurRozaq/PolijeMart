@@ -35,7 +35,7 @@ class AdminController extends Controller
     {
         // dd('Pengujian Javascript');
         $request->validate([
-            'kode_barang' => 'required',
+            'kode_barang' => 'required|unique:barangs,kode_barang',
             'nama_barang' => 'required',
             'deskripsi' => 'required|string',
             'kategori_id' => 'required|numeric',
@@ -79,7 +79,7 @@ class AdminController extends Controller
     {
         // dd('Pengujian Javascript');
         $request->validate([
-            'kode_barang' => 'required',
+            'kode_barang' => 'required|unique:barangs,kode_barang,' . $id,
             'nama_barang' => 'required',
             'deskripsi' => 'required|string',
             'kategori_id' => 'required|numeric',
@@ -177,15 +177,16 @@ class AdminController extends Controller
 
     public function manageOrder()
     {
-        
+
         return view('admin.orders.order');
     }
 
-    public function completeOrder($id){
+    public function completeOrder($id)
+    {
 
         DB::beginTransaction();
 
-        try{
+        try {
             $penjualan = Penjualan::with('detail_penjualans')->findOrFail($id);
 
             $penjualan->update([
@@ -193,10 +194,10 @@ class AdminController extends Controller
                 'batas_waktu' => now()->addHour(24),
             ]);
 
-            foreach($penjualan->detail_penjualans as $detail){
+            foreach ($penjualan->detail_penjualans as $detail) {
                 $barang = Barang::findOrFail($detail->barang_id);
 
-                if($barang->stok < $detail->jumlah){
+                if ($barang->stok < $detail->jumlah) {
                     throw new Exception('Stok barang tidak mencukupi !');
                 }
 
@@ -205,8 +206,7 @@ class AdminController extends Controller
 
             DB::commit();
             return redirect()->back()->with('status', 'Pesanan berhasil diambil !');
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
         }

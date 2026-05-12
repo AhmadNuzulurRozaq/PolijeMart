@@ -4,6 +4,7 @@
 
 @section('content')
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="w-full" x-data="{ openModal: false, openModalCart: false, jumlah: 1 }">
     
@@ -190,4 +191,44 @@
         -moz-appearance: textfield;
     }
 </style>
+
+<!-- Menampilkan pesan error (misal: stok kurang) -->
+@if(session('error'))
+<script>
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            if (typeof window.Swal !== 'undefined') {
+                window.Swal.fire({
+                    icon: 'error',
+                    title: 'Oops... Gagal!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#1C4E80'
+                });
+            } else {
+                alert('Oops... Gagal!\n{{ session('error') }}');
+            }
+        }, 100);
+    });
+</script>
+@endif
+
+<!-- Menampilkan pesan sukses (misal: berhasil tambah keranjang) -->
+@if(session('status'))
+<script>
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            if (typeof window.Swal !== 'undefined') {
+                window.Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('status') }}',
+                    confirmButtonColor: '#1C4E80'
+                });
+            } else {
+                alert('Berhasil!\n{{ session('status') }}');
+            }
+        }, 100);
+    });
+</script>
+@endif
 @endsection

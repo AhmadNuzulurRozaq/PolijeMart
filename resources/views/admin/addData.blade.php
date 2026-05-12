@@ -162,7 +162,7 @@
                 <a href="{{ route('admin.inventory') }}" class="w-full sm:w-auto px-6 py-3 rounded-xl text-slate-700 bg-slate-100 font-bold hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200 text-center cursor-pointer">
                     KEMBALI
                 </a>
-                <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#1C4E80]/50">
+                <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#1C4E80]/50 cursor-pointer">
                     SIMPAN PRODUK
                 </button>
             </div>

@@ -21,6 +21,16 @@ new class extends Component
 
         if ($order && $order->status == 'proses') {
 
+            // Cek terlebih dahulu apakah semua stok barang mencukupi
+            foreach ($order->detail_penjualans as $detail) {
+                $barang = Barang::find($detail->barang_id);
+                if($barang && $barang->stok < $detail->jumlah) {
+                    session()->flash('error', 'Stok barang ' . $barang->nama_barang . ' tidak mencukupi untuk diselesaikan!');
+                    return;
+                }
+            }
+
+            // Jika stok cukup semua, baru kurangi stoknya
             foreach ($order->detail_penjualans as $detail) {
                 $barang = Barang::find($detail->barang_id);
 

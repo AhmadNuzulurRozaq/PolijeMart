@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-4 mt-6">
-                    <button type="submit" class="px-6 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <button type="submit" class="px-6 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
                         Simpan Perubahan
                     </button>
                 </div>
@@ -145,7 +145,7 @@
                             }, 2000);
                         </script>
                     @endif
-                    <button type="submit" class="px-6 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    <button type="submit" class="px-6 py-3 rounded-xl text-white bg-[#1C4E80] font-bold hover:bg-[#143a60] active:bg-[#0f2c4a] shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
                         Ubah Password
                     </button>
                 </div>
