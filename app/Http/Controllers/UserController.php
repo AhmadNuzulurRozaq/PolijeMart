@@ -17,7 +17,12 @@ class UserController extends Controller
     {
         // Mengambil 10 produk terbaru untuk halaman utama
         $product = Barang::latest()->take(10)->get();
-        return view('customer.index', compact(['product']));
+        $categories = Kategori::all();
+        $carouselImages = [
+            'banner1' => 'storage/images/img0_(Windows_10).jpg',
+            'banner2' => 'storage/images/wallpaperflare.com_wallpaper.jpg',
+        ];
+        return view('customer.index', compact(['product', 'categories', 'carouselImages']));
     }
 
     public function allProduct(Request $request)
@@ -25,8 +30,14 @@ class UserController extends Controller
         $query = Barang::query();
 
         if ($request->has('search') && $request->search != '') {
-            $query->where('nama_barang', 'like', '%' . $request->search . '%')
-                ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_barang', 'like', '%' . $request->search . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('kategori_id', $request->kategori);
         }
 
         // Menampilkan seluruh produk dengan pagination (15 item per halaman)
