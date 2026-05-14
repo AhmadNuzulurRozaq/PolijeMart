@@ -21,7 +21,7 @@
                 <!-- Kode Barang -->
                 <div class="flex flex-col gap-2">
                     <label for="kodeBarang" class="text-sm font-bold text-slate-700">Kode Barang <span class="text-red-500">*</span></label>
-                    <input type="text" name="kode_barang" id="kodeBarang" value="{{ old('kode_barang', $barang->kode_barang) }}" required 
+                    <input type="text" name="kode_barang" id="kodeBarang" value="{{ old('kode_barang', $barang->kode_barang) }}" required maxlength="10"
                     class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
                     @error('kode_barang')
                         border-red-500 focus:ring-2 focus:ring-red-200

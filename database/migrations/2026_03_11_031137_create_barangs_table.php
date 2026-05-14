@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('stok');
             $table->foreignId('kategori_id')->constrained('kategoris');
             $table->decimal('harga', 10, 2);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

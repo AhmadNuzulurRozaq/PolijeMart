@@ -30,9 +30,15 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($request->user()->id)],
-            'nomor_telepon' => ['nullable', 'string', 'max:20'],
+            'nomor_telepon' => ['nullable', 'string', 'min:10' ,'max:12', 'regex:/^(0|62|\+62)8[1-9][0-9]{6,11}$/'],
             'alamat' => ['nullable', 'string'],
-        ]);
+        ], 
+        [
+            'nomor_telepon.min' => 'Jumlah digit minimal 8 angka dan maksimal 12 angka',
+            'nomor_telepon.max' => 'Jumlah digit minimal 8 angka dan maksimal 12 angka',
+            'nomor_telepon.regex' => 'Fromat telepon tidak valid',
+        ]
+        );
 
         $request->user()->fill($validated);
 

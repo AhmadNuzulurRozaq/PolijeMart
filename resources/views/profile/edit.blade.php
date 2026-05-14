@@ -55,7 +55,7 @@
 
                     <div class="flex flex-col gap-2">
                         <label for="email" class="text-sm font-bold text-slate-700">Email</label>
-                        <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required autocomplete="username"
+                        <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required autocomplete="username" readonly
                             class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all">
                         @error('email')
                             <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>
@@ -64,7 +64,7 @@
 
                     <div class="flex flex-col gap-2">
                         <label for="nomor_telepon" class="text-sm font-bold text-slate-700">Nomor Telepon</label>
-                        <input id="nomor_telepon" name="nomor_telepon" type="text" value="{{ old('nomor_telepon', $user->nomor_telepon) }}" placeholder="08xxxxxxxxxx"
+                        <input id="nomor_telepon" name="nomor_telepon" type="tel" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ old('nomor_telepon', $user->nomor_telepon) }}" placeholder="08xxxxxxxxxx"
                             class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all">
                         @error('nomor_telepon')
                             <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>

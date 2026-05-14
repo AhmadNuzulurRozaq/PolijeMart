@@ -35,7 +35,7 @@ class AdminController extends Controller
     {
         // dd('Pengujian Javascript');
         $request->validate([
-            'kode_barang' => 'required|unique:barangs,kode_barang',
+            'kode_barang' => 'required|max:10|unique:barangs,kode_barang',
             'nama_barang' => 'required',
             'deskripsi' => 'required|string',
             'kategori_id' => 'required|numeric',
@@ -79,7 +79,7 @@ class AdminController extends Controller
     {
         // dd('Pengujian Javascript');
         $request->validate([
-            'kode_barang' => 'required|unique:barangs,kode_barang,' . $id,
+            'kode_barang' => 'required|max:10|unique:barangs,kode_barang,' . $id,
             'nama_barang' => 'required',
             'deskripsi' => 'required|string',
             'kategori_id' => 'required|numeric',

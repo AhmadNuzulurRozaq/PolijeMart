@@ -6,7 +6,30 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="w-full" x-data="{ openModal: false, openModalCart: false, jumlah: 1 }">
+<div class="w-full" x-data="{ 
+openModal: false, 
+openModalCart: false, 
+jumlah: 1,
+formatInput(e){
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    if(e.target.value === '0' || e.target.value === ''){
+        this.jumlah = 1;
+    }
+},
+
+antiPaste(e){
+    let pasteData = (e.clipboardData || e.window.clipboardData).getData('text');
+    if(/[^0-9]/.test(pasteData)) {
+        e.preventDefault();
+        Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Hanya angka yang diizinkan untuk jumlah barang!',
+                confirmButtonColor: '#1C4E80'
+        });
+    }
+}
+ }">
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-16">
         
@@ -102,7 +125,7 @@
                 <div class="flex items-center gap-4 mb-8">
                     <button @click="if(jumlah > 1) jumlah--" class="w-12 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 text-xl font-bold flex items-center justify-center transition-colors shadow-sm cursor-pointer">&minus;</button>
                     
-                    <input type="number" x-model.number="jumlah" min="1" max="50"
+                    <input type="number" x-model.number="jumlah" min="1" max="50" @input="formatInput($event)" @paste="antiPaste($event)"
                            class="w-20 bg-white border-2 border-slate-200 rounded-xl py-3 text-center text-2xl font-black text-[#1C4E80] outline-none focus:border-[#1C4E80] transition-colors appearance-none m-0">
                     
                     <button @click="jumlah++" class="w-12 h-12 rounded-xl bg-[#1C4E80] hover:bg-[#113253] text-white text-xl font-bold flex items-center justify-center transition-colors shadow-sm cursor-pointer">&#43;</button>
@@ -157,7 +180,7 @@
                 <div class="flex items-center gap-4 mb-8">
                     <button @click="if(jumlah > 1) jumlah--" class="w-12 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 text-xl font-bold flex items-center justify-center transition-colors shadow-sm cursor-pointer">&minus;</button>
                     
-                    <input type="number" x-model.number="jumlah" min="1" max="50"
+                    <input type="number" x-model.number="jumlah" min="1" max="50" @input="formatInput($event)" @paste="antiPaste($event)"
                            class="w-20 bg-white border-2 border-slate-200 rounded-xl py-3 text-center text-2xl font-black text-[#1C4E80] outline-none focus:border-[#1C4E80] transition-colors appearance-none m-0">
                     
                     <button @click="jumlah++" class="w-12 h-12 rounded-xl bg-[#1C4E80] hover:bg-[#113253] text-white text-xl font-bold flex items-center justify-center transition-colors shadow-sm cursor-pointer">&#43;</button>

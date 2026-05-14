@@ -83,4 +83,13 @@ class LoginRequest extends FormRequest
     {
         return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Email wajib diisi !',
+            'email.email' => 'Format email tidak sesuai !',
+            'password.required' => 'Password wajib diisi !',
+        ];
+    }
 }

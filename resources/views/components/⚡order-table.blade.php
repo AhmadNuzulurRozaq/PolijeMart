@@ -17,43 +17,78 @@ new class extends Component
     }
 
     public function selesaikanPesanan($id){
-        $order = Penjualan::with('detail_penjualans')->find($id);
+        try {
+            $order = Penjualan::with('detail_penjualans')->find($id);
 
-        if ($order && $order->status == 'proses') {
+            if ($order && $order->status == 'proses') {
 
-            // Cek terlebih dahulu apakah semua stok barang mencukupi
-            foreach ($order->detail_penjualans as $detail) {
-                $barang = Barang::find($detail->barang_id);
-                if($barang && $barang->stok < $detail->jumlah) {
-                    session()->flash('error', 'Stok barang ' . $barang->nama_barang . ' tidak mencukupi untuk diselesaikan!');
-                    return;
+                // Cek terlebih dahulu apakah semua stok barang mencukupi
+                foreach ($order->detail_penjualans as $detail) {
+                    $barang = Barang::find($detail->barang_id);
+                    if($barang && $barang->stok < $detail->jumlah) {
+                        session()->flash('error', 'Stok barang ' . $barang->nama_barang . ' tidak mencukupi untuk diselesaikan!');
+                        return;
+                    }
                 }
-            }
 
-            // Jika stok cukup semua, baru kurangi stoknya
-            foreach ($order->detail_penjualans as $detail) {
-                $barang = Barang::find($detail->barang_id);
+                // Jika stok cukup semua, baru kurangi stoknya
+                foreach ($order->detail_penjualans as $detail) {
+                    $barang = Barang::find($detail->barang_id);
 
-                if($barang){
-                    $barang->decrement('stok', $detail->jumlah);
+                    if($barang){
+                        $barang->decrement('stok', $detail->jumlah);
+                    }
                 }
-            }
 
-            $order->update([
-                'status' => 'selesai',
-                'batas_waktu' => now()->addHours(24), // Perbaikan: addHours pakai 's'
-            ]);
+                $order->update([
+                    'status' => 'selesai',
+                    'batas_waktu' => now()->addHours(24), 
+                ]);
+
+                session()->flash('status', 'Pesanan berhasil diselesaikan!');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function batalkanPesanan($id){
+        try {
+            $order = Penjualan::with('detail_penjualans')->find($id);
+
+            if ($order && $order->status == 'selesai') {
+                // Kembalikan stok barang
+                foreach ($order->detail_penjualans as $detail) {
+                    $barang = Barang::find($detail->barang_id);
+                    if($barang){
+                        $barang->increment('stok', $detail->jumlah);
+                    }
+                }
+
+                $order->update([
+                    'status' => 'batal',
+                    // 'batas_waktu' => null, // Dikomentari untuk mencegah Error Database constraint null
+                ]);
+
+                session()->flash('status', 'Pesanan berhasil dibatalkan dan stok dikembalikan!');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Gagal membatalkan: ' . $e->getMessage());
         }
     }
 
     public function hapusPesanan($id){
-        $order = Penjualan::find($id);
+        try {
+            $order = Penjualan::find($id);
 
-        if ($order && in_array($order->status, ['selesai', 'batal'])) {
-            // Hapus detail penjualan terlebih dahulu untuk menghindari Foreign Key constraint error
-            $order->detail_penjualans()->delete();
-            
-            $order->delete();
+            if ($order && in_array($order->status, ['selesai', 'batal'])) {
+                $order->detail_penjualans()->delete();
+                $order->delete();
+                
+                session()->flash('status', 'Pesanan berhasil dihapus secara permanen!');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Gagal menghapus: ' . $e->getMessage());
         }
     }
 
@@ -78,7 +113,6 @@ new class extends Component
 
             $order->update([
                 'status' => 'batal',
-                'batas_waktu' => null, // Reset batas waktu
             ]);
         }
 
@@ -113,6 +147,21 @@ new class extends Component
         </div>
     </div>
 
+    {{-- AREA FLASH MESSAGE UNTUK MENAMPILKAN UMPAN BALIK KE ADMIN --}}
+    @if(session()->has('status'))
+x        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-green-50 text-green-600 border border-green-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span class="font-semibold">{{ session('status') }}</span>
+        </div>
+    @endif
+    
+    @if(session()->has('error'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-red-50 text-red-600 border border-red-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            <span class="font-semibold">{{ session('error') }}</span>
+        </div>
+    @endif
+
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
         <div class="overflow-x-auto">
             <table class="w-full text-left whitespace-nowrap">
@@ -133,7 +182,7 @@ new class extends Component
                     <tr wire:key="order-{{ $item->id }}" class="hover:bg-slate-50 transition-colors group">
                         <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
                         <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
-                        <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d M Y, H:i') }}</td>
+                        <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
                         <td class="p-4 text-sm">
                             @foreach($item->detail_penjualans as $detail)
                                 <div class="font-bold text-slate-800">
@@ -168,6 +217,7 @@ new class extends Component
                                 
                                 @if($item->status == 'proses')
                                     <button type="button" @click="
+                                        let component = $wire;
                                         Swal.fire({
                                             title: 'Selesaikan Pesanan?',
                                             text: 'Apakah pesanan ini sudah siap diambil untuk diselesaikan?',
@@ -179,7 +229,7 @@ new class extends Component
                                             cancelButtonText: 'Batal'
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                $wire.selesaikanPesanan({{ $item->id }});
+                                                component.selesaikanPesanan({{ $item->id }});
                                             }
                                         })
                                     " class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5 cursor-pointer">
@@ -187,8 +237,31 @@ new class extends Component
                                     </button>
                                 @endif
 
+                                @if($item->status == 'selesai')
+                                    <button type="button" @click="
+                                        let component = $wire;
+                                        Swal.fire({
+                                            title: 'Batalkan Pesanan?',
+                                            text: 'Pesanan ini akan dibatalkan dan stok akan otomatis dikembalikan!',
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#eab308',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ya, Batalkan!',
+                                            cancelButtonText: 'Tidak'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                component.batalkanPesanan({{ $item->id }});
+                                            }
+                                        })
+                                    " class="bg-yellow-500 flex gap-2 p-2 items-center justify-center hover:bg-yellow-600 active:bg-yellow-700 transition-all rounded-lg text-white font-semibold shadow-sm hover:-translate-y-0.5 cursor-pointer" title="Batalkan Pesanan Secara Manual">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                    </button>
+                                @endif
+
                                 @if(in_array($item->status, ['selesai', 'batal']))
                                     <button type="button" @click="
+                                        let component = $wire;
                                         Swal.fire({
                                             title: 'Apakah Anda yakin?',
                                             text: 'Data pesanan yang dihapus tidak dapat dikembalikan!',
@@ -200,7 +273,7 @@ new class extends Component
                                             cancelButtonText: 'Batal'
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                $wire.hapusPesanan({{ $item->id }});
+                                                component.hapusPesanan({{ $item->id }});
                                             }
                                         })
                                     " class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
