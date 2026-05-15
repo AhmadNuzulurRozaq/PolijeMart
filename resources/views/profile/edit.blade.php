@@ -103,7 +103,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col gap-2 md:col-span-2">
                         <label for="current_password" class="text-sm font-bold text-slate-700">Password Saat Ini</label>
-                        <input id="current_password" name="current_password" type="password" autocomplete="current-password"
+                        <input id="current_password" name="current_password" type="password" autocomplete="current-password" required
                             class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all">
                         @error('current_password', 'updatePassword')
                             <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>
@@ -112,7 +112,7 @@
 
                     <div class="flex flex-col gap-2">
                         <label for="password" class="text-sm font-bold text-slate-700">Password Baru</label>
-                        <input id="password" name="password" type="password" autocomplete="new-password"
+                        <input id="password" name="password" type="password" autocomplete="new-password" required
                             class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all">
                         @error('password', 'updatePassword')
                             <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>
@@ -121,7 +121,7 @@
 
                     <div class="flex flex-col gap-2">
                         <label for="password_confirmation" class="text-sm font-bold text-slate-700">Konfirmasi Password Baru</label>
-                        <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password"
+                        <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required
                             class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all">
                         @error('password_confirmation', 'updatePassword')
                             <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>
@@ -151,6 +151,68 @@
                 </div>
             </form>
         </div>
+
+        <!-- Delete Account -->
+        <div class="bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-red-100">
+            <header class="mb-6">
+                <h2 class="text-xl font-bold text-red-600">Hapus Akun</h2>
+                <p class="mt-1 text-sm text-slate-500">Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Sebelum menghapus akun Anda, harap masukkan password Anda untuk mengonfirmasi.</p>
+            </header>
+
+            <form method="post" action="{{ route('profile.destroy') }}" id="formDeleteAccount" class="space-y-6">
+                @csrf
+                @method('delete')
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col gap-2">
+                        <label for="password_delete" class="text-sm font-bold text-slate-700">Password</label>
+                        <input id="password_delete" name="password" type="password" placeholder="Masukkan password Anda" required
+                            class="w-full p-3 bg-slate-50 border border-slate-200 outline-none rounded-xl focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all">
+                        @error('password', 'userDeletion')
+                            <p class="text-red-500 text-xs font-semibold mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-start mt-6">
+                    <button type="button" onclick="confirmDeleteAccount()" class="px-6 py-3 rounded-xl text-white bg-red-600 font-bold hover:bg-red-700 active:bg-red-800 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
+                        Hapus Akun Saya
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmDeleteAccount() {
+        const passwordInput = document.getElementById('password_delete').value;
+        if (!passwordInput) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Password Diperlukan',
+                text: 'Silakan masukkan password Anda untuk menghapus akun.',
+                confirmButtonColor: '#1C4E80'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Setelah akun dihapus, semua data akan hilang secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Hapus Akun!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formDeleteAccount').submit();
+            }
+        });
+    }
+</script>
 @endsection

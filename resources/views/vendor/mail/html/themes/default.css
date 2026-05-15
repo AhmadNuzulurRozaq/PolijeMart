@@ -1,0 +1,105 @@
+/* Background Luar Email (Warna Slate-50) */
+body, .wrapper, .table {
+    background-color: #f8fafc;
+}
+
+/* Header Container */
+.header {
+    padding: 30px 0 20px 0;
+    text-align: center;
+}
+
+/* Logo Image */
+.logo {
+    height: 65px;
+    max-height: 65px;
+    width: auto;
+    border-radius: 8px;
+}
+
+/* Kotak Konten Utama Email */
+.inner-body {
+    background-color: #ffffff;
+    margin: 0 auto;
+    padding: 32px;
+    width: 570px;
+    border-radius: 20px; /* Sudut membulat modern */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03); /* Soft shadow */
+    border: 1px solid #f1f5f9;
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 570px;
+}
+
+/* Typography (Teks) */
+h1 {
+    color: #1e293b; /* Slate-800 */
+    font-size: 22px;
+    font-weight: 800;
+    margin-top: 0;
+    text-align: left;
+}
+
+p {
+    color: #475569; /* Slate-600 */
+    font-size: 15px;
+    line-height: 1.6em;
+    margin-top: 0;
+    text-align: left;
+}
+
+/* Styling Tombol Email */
+.action {
+    margin: 30px auto;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.button {
+    -webkit-text-size-adjust: none;
+    border-radius: 12px; /* Tombol membulat */
+    color: #fff;
+    display: inline-block;
+    overflow: hidden;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* Warna Tombol & Padding (Menggunakan Border tebal karena aturan baku Email) */
+.button-primary {
+    background-color: #1C4E80;
+    border-bottom: 12px solid #1C4E80;
+    border-left: 24px solid #1C4E80;
+    border-right: 24px solid #1C4E80;
+    border-top: 12px solid #1C4E80;
+}
+
+/* Subcopy (Teks kecil di bawah tombol) */
+.subcopy {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 30px;
+    padding-top: 30px;
+}
+
+.subcopy p {
+    font-size: 13px;
+    color: #64748b;
+    word-break: break-all;
+}
+
+/* Footer (Copyright di bawah kotak putih) */
+.footer {
+    margin: 0 auto;
+    padding: 30px 0;
+    text-align: center;
+    width: 570px;
+}
+
+.footer p {
+    color: #94a3b8;
+    font-size: 12px;
+    text-align: center;
+}

@@ -5,6 +5,8 @@ use Livewire\WithPagination;
 use App\Models\Penjualan;
 use App\Models\Barang;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusMail;
 
 new class extends Component
 {
@@ -18,7 +20,7 @@ new class extends Component
 
     public function selesaikanPesanan($id){
         try {
-            $order = Penjualan::with('detail_penjualans')->find($id);
+            $order = Penjualan::with(['detail_penjualans', 'user'])->find($id);
 
             if ($order && $order->status == 'proses') {
 
@@ -45,7 +47,11 @@ new class extends Component
                     'batas_waktu' => now()->addHours(24), 
                 ]);
 
-                session()->flash('status', 'Pesanan berhasil diselesaikan!');
+                if ($order->user && $order->user->email) {
+                    Mail::to($order->user->email)->send(new OrderStatusMail($order, 'selesai'));
+                }
+
+                session()->flash('status', 'Pesanan berhasil diselesaikan dan email telah dikirim!');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -54,7 +60,7 @@ new class extends Component
 
     public function batalkanPesanan($id){
         try {
-            $order = Penjualan::with('detail_penjualans')->find($id);
+            $order = Penjualan::with(['detail_penjualans', 'user'])->find($id);
 
             if ($order && $order->status == 'selesai') {
                 // Kembalikan stok barang
@@ -70,7 +76,11 @@ new class extends Component
                     // 'batas_waktu' => null, // Dikomentari untuk mencegah Error Database constraint null
                 ]);
 
-                session()->flash('status', 'Pesanan berhasil dibatalkan dan stok dikembalikan!');
+                if ($order->user && $order->user->email) {
+                    Mail::to($order->user->email)->send(new OrderStatusMail($order, 'batal'));
+                }
+
+                session()->flash('status', 'Pesanan berhasil dibatalkan, stok dikembalikan, dan email telah dikirim!');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal membatalkan: ' . $e->getMessage());
@@ -149,7 +159,7 @@ new class extends Component
 
     {{-- AREA FLASH MESSAGE UNTUK MENAMPILKAN UMPAN BALIK KE ADMIN --}}
     @if(session()->has('status'))
-x        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-green-50 text-green-600 border border-green-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-green-50 text-green-600 border border-green-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
             <span class="font-semibold">{{ session('status') }}</span>
         </div>

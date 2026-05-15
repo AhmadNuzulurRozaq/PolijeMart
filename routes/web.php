@@ -13,20 +13,11 @@ Route::get('/', function () {
         }
         return redirect()->route('customer.index');
     }
-    return view('welcome');
+    return view('auth.login');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::middleware('admin')->group(function () {
+Route::middleware(['admin', 'verified'])->group(function () {
     // ROUTE BARANG + DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
@@ -49,7 +40,7 @@ Route::middleware('admin')->group(function () {
     Route::post('/order/{id}/selesai', [AdminController::class, 'completeOrder'])->name('admin.completeOrder');
 });
 
-Route::middleware('user')->group(function () {
+Route::middleware(['user', 'verified'])->group(function () {
     Route::get('/customer', [UserController::class, 'index'])->name('customer.index');
     Route::get('/customer/all-products', [UserController::class, 'allProduct'])->name('customer.allProduct');
     Route::get('/customer/detail/{id}', [UserController::class, 'detailProduct'])->name('customer.detailProduct');
@@ -62,4 +53,14 @@ Route::middleware('user')->group(function () {
     Route::post('/customer/checkout/cart', [UserController::class, 'checkoutCart'])->name('customer.checkoutCart');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 require __DIR__ . '/auth.php';
+
+Route::get('/api-demo', function () {
+    return view('api-test');
+});

@@ -9,6 +9,8 @@ use App\Models\Penjualan;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Mail\OrderStatusMail;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -187,7 +189,7 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            $penjualan = Penjualan::with('detail_penjualans')->findOrFail($id);
+            $penjualan = Penjualan::with(['detail_penjualans', 'user'])->findOrFail($id);
 
             $penjualan->update([
                 'status' => 'selesai',
@@ -205,7 +207,11 @@ class AdminController extends Controller
             }
 
             DB::commit();
-            return redirect()->back()->with('status', 'Pesanan berhasil diambil !');
+
+            if ($penjualan->user && $penjualan->user->email) {
+                Mail::to($penjualan->user->email)->send(new OrderStatusMail($penjualan, 'selesai'));
+            }
+            return redirect()->back()->with('status', 'Pesanan berhasil diambil & Email berhasil di kirim !');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
