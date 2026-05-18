@@ -8,6 +8,19 @@
     <form action="{{ route('admin.storeCategory') }}" method="POST" id="submitForm">
         @csrf
         <div class="flex flex-col gap-2 md:col-span-2">
+            <label for="kodeKategori" class="text-sm font-bold text-slate-700">Kode Kategori <span class="text-red-500">*</span></label>
+            <input type="text" name="kode_kategori" id="kodeKategori" value="{{ old('kode_kategori') }}" required placeholder="Masukkan kode kategori..."
+                class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
+                    @error('kode_kategori')
+                        border-red-500 focus:ring-2 focus:ring-red-200
+                    @else
+                        border-slate-200 focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 hover:border-[#1C4E80]/50
+                    @enderror">
+            @error('kode_kategori')
+            <p class="text-red-500 text-xs font-semibold flex items-center gap-1">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="flex flex-col gap-2 md:col-span-2">
             <label for="namaKategori" class="text-sm font-bold text-slate-700">Nama Kategori <span class="text-red-500">*</span></label>
             <input type="text" name="nama_kategori" id="namaKategori" value="{{ old('nama_kategori') }}" required placeholder="Masukkan nama kategori..."
                 class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white

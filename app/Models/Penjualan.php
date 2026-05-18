@@ -9,6 +9,7 @@ class Penjualan extends Model
     protected $table = 'penjualans';
     protected $fillable = [
         'id',
+        'nomor_pesanan',
         'user_id',
         'tanggal_penjualan',
         'total_bayar',

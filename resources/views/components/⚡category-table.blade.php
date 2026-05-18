@@ -19,9 +19,10 @@ new class extends Component
     {
         return [
             'kategori' => Kategori::when($this->search, function ($query) {
-                $query->where('nama_kategori', 'like', '%' . $this->search . '%');
+                $query->where('kode_kategori', 'like', '%' . $this->search . '%')
+                      ->orWhere('nama_kategori', 'like', '%' . $this->search . '%');
             })->paginate(10),
-            'total' => Kategori::count()
+            'total' => Kategori::count(),
         ];
     }
 };
@@ -76,6 +77,7 @@ new class extends Component
                 <thead class="bg-[#1C4E80] text-white">
                     <tr>
                         <th class="p-4 text-sm font-semibold tracking-wide w-16 text-center">NO</th>
+                        <th class="p-4 text-sm font-semibold tracking-wide w-16 text-center">KODE KATEGORI</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">NAMA KATEGORI</th>
                         <th class="p-4 text-sm font-semibold tracking-wide w-48 text-center">AKSI</th>
                     </tr>
@@ -84,6 +86,7 @@ new class extends Component
                     @forelse($kategori as $item)
                     <tr class="hover:bg-slate-50 transition-colors group">
                         <td class="p-4 text-center font-medium">{{ $kategori->firstItem() + $loop->index }}</td>
+                        <td class="p-4 font-medium text-center">{{ $item->kode_kategori }}</td>
                         <td class="p-4 font-medium">{{ $item->nama_kategori }}</td>
                         <td class="p-4">
                             <div class="flex justify-center items-center gap-2">

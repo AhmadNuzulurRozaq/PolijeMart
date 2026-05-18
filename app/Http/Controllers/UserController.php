@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Penjualan;
 use App\Models\Detail_penjualan;
@@ -19,8 +20,7 @@ class UserController extends Controller
         $product = Barang::latest()->take(10)->get();
         $categories = Kategori::all();
         $carouselImages = [
-            'banner1' => 'storage/images/img0_(Windows_10).jpg',
-            'banner2' => 'storage/images/wallpaperflare.com_wallpaper.jpg',
+            'banner1' => 'storage/images/banner1.png',
         ];
         return view('customer.index', compact(['product', 'categories', 'carouselImages']));
     }
@@ -71,7 +71,7 @@ class UserController extends Controller
     public function cartAdd(Request $request, $id)
     {
         $product = Barang::findOrFail($id);
-        $cart = session()->get('cart', []);
+        $cart = Session::get('cart', []);
         $jumlah = $request->jumlah ?? 1;
 
         // Cek apakah jumlah yang dimasukkan melebihi sisa stok yang ada
@@ -93,16 +93,16 @@ class UserController extends Controller
             ];
         }
 
-        session()->put('cart', $cart);
+        Session::put('cart', $cart);
         return redirect()->route('customer.cartProduct')->with('status', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
     public function cartRemove($id)
     {
-        $cart = session()->get('cart');
+        $cart = Session::get('cart');
         if (isset($cart[$id])) {
             unset($cart[$id]);
-            session()->put('cart', $cart);
+            Session::put('cart', $cart);
         }
         return redirect()->back()->with('status', 'Produk dihapus dari keranjang.');
     }
@@ -137,7 +137,7 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Pilih minimal satu produk untuk di-checkout.');
         }
 
-        $cart = session()->get('cart', []);
+        $cart = Session::get('cart', []);
         $checkoutItems = [];
         $subtotal = 0;
 
@@ -162,13 +162,16 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
+            // Membuat nomor pesanan acak (Contoh: TRX-20231024153022-ABC)
+            $nomorPesanan = 'TRX-' . date('YmdHis') . '-' . strtoupper(substr(uniqid(), -3));
+
             $penjualan = Penjualan::create([
+                'nomor_pesanan' => $nomorPesanan,
                 'user_id' => Auth::id(),
                 'tanggal_penjualan' => now(),
                 'total_bayar' => $request->total_bayar,
                 'status' => 'proses',
                 'batas_waktu' => now(),
-
             ]);
 
             $barang_ids = $request->barang_id; // Merupakan array karena checkout bisa multi-item
@@ -192,10 +195,10 @@ class UserController extends Controller
                 ]);
 
                 // Hapus produk tersebut dari keranjang session setelah sukses dibeli
-                $cart = session()->get('cart', []);
+                $cart = Session::get('cart', []);
                 if (isset($cart[$barang_id])) {
                     unset($cart[$barang_id]);
-                    session()->put('cart', $cart);
+                    Session::put('cart', $cart);
                 }
             }
 

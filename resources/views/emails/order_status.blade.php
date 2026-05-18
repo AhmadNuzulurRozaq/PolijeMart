@@ -30,7 +30,7 @@
             <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-4">Halo, {{ $penjualan->user->name ?? 'Pelanggan' }}!</h2>
             
             <p class="text-slate-600 mb-6 leading-relaxed">
-                Kami menginformasikan bahwa status pesanan Anda dengan nomor ID referensi <strong class="text-[#1C4E80]">#{{ $penjualan->id }}</strong> telah diperbarui.
+                Kami menginformasikan bahwa status pesanan Anda dengan nomor ID referensi <strong class="text-[#1C4E80]">#{{ $penjualan->nomor_pesanan }}</strong> telah diperbarui.
             </p>
 
             <!-- Status Badge -->

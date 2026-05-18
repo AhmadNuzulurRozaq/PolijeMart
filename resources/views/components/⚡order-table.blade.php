@@ -178,6 +178,7 @@ new class extends Component
                 <thead class="bg-[#1C4E80] text-white">
                     <tr>
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
+                        <th class="p-4 text-sm font-semibold tracking-wide">NO. PESANAN</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">NAMA PEMBELI</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TANGGAL</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">DETAIL BARANG</th>
@@ -191,6 +192,7 @@ new class extends Component
                     @forelse($penjualan as $item)
                     <tr wire:key="order-{{ $item->id }}" class="hover:bg-slate-50 transition-colors group">
                         <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
+                        <td class="p-4 font-mono text-sm text-[#1C4E80] font-bold">{{ $item->nomor_pesanan ?? '-' }}</td>
                         <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
                         <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
                         <td class="p-4 text-sm">

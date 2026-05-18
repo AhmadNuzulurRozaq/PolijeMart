@@ -91,7 +91,9 @@
                 <!-- Stok -->
                 <div class="flex flex-col gap-2">
                     <label for="stokBarang" class="text-sm font-bold text-slate-700">Stok Tersedia <span class="text-red-500">*</span></label>
-                    <input type="number" name="stok" id="stokBarang" value="{{ old('stok') }}" required min="0" placeholder="0" 
+                    <input type="number" name="stok" id="stokBarang" value="{{ old('stok', 1) }}" required min="1" placeholder="1" 
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    onpaste="if(!/^[0-9]+$/.test(event.clipboardData.getData('text'))) event.preventDefault();"
                     class="w-full p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
                     @error('stok')
                         border-red-500 focus:ring-2 focus:ring-red-200
@@ -111,6 +113,8 @@
                             <span class="text-slate-500 font-medium">Rp</span>
                         </div>
                         <input type="number" name="harga" id="harga" value="{{ old('harga') }}" required min="0" placeholder="0" 
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                        onpaste="if(!/^[0-9]+$/.test(event.clipboardData.getData('text'))) event.preventDefault();"
                         class="w-full pl-10 p-3 bg-slate-50 border outline-none rounded-xl transition-all duration-300 focus:bg-white
                         @error('harga')
                             border-red-500 focus:ring-2 focus:ring-red-200

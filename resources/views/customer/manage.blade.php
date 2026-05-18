@@ -20,6 +20,7 @@
                     <tr>
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TANGGAL PESAN</th>
+                        <th class="p-4 text-sm font-semibold tracking-wide text-center">NO. PESANAN</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">DETAIL BARANG</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TOTAL BAYAR</th>
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">STATUS</th>
@@ -32,6 +33,8 @@
                         <td class="p-4 text-center font-medium">{{ $orders->firstItem() + $loop->index }}</td>
                         
                         <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d M Y, H:i') }}</td>
+
+                        <td class="p-4 text-center font-medium">{{ $item->nomor_pesanan ?? '-' }}</td>
                         
                         <td class="p-4 text-sm">
                             @foreach($item->detail_penjualans as $detail)

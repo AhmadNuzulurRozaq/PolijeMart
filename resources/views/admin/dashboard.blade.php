@@ -11,7 +11,7 @@
         <p class="text-sm text-slate-500 mt-2 font-medium">Selamat datang, <span class="text-[#1C4E80] font-bold">{{ auth()->user()->name ?? 'Admin' }}</span>! Berikut adalah ringkasan sistem Polije Mart saat ini.</p>
     </div>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
             <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1C4E80] to-[#0091D5] flex items-center justify-center text-white shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300">
@@ -43,22 +43,153 @@
             </div>
         </div>
 
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center text-white shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3C7.03 3 3 4.79 3 7s4.03 4 9 4s9-1.79 9-4s-4.03-4-9-4zm0 6c-3.31 0-6-1.02-6-2.25S8.69 4.5 12 4.5s6 1.02 6 2.25S15.31 9 12 9zm0 3c-4.97 0-9 1.79-9 4s4.03 4 9 4s9-1.79 9-4s-4.03-4-9-4zm0 6c-4.97 0-9 1.79-9 4s4.03 4 9 4s9-1.79 9-4s-4.03-4-9-4z"/></svg>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total Stok</p>
+                <h1 class="text-3xl font-black text-slate-800">{{ $totalStok ?? 0 }}</h1>
+            </div>
+        </div>
+
     </section>
 
-    {{-- <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
-            <svg class="w-16 h-16 text-slate-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            <h3 class="text-lg font-bold text-slate-700">Grafik Penjualan</h3>
-            <p class="text-sm text-slate-400 mt-1">Area ini bisa digunakan untuk menampilkan grafik penjualan bulanan ke depannya.</p>
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <h3 class="text-lg font-bold text-slate-700 mb-4">Statistik Jumlah Produk Berdasarkan Kategori</h3>
+            <div class="w-full relative h-[400px]">
+                <canvas id="categoryChart"></canvas>
+            </div>
         </div>
         
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
-            <svg class="w-16 h-16 text-slate-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2l4-4"></path></svg>
-            <h3 class="text-lg font-bold text-slate-700">Aktivitas Terbaru</h3>
-            <p class="text-sm text-slate-400 mt-1">Log aktivitas atau pesanan terbaru yang masuk akan tampil di sini.</p>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <h3 class="text-lg font-bold text-slate-700 mb-4">Statistik Status Pesanan</h3>
+            <div class="w-full relative h-[400px]">
+                <canvas id="orderStatusChart"></canvas>
+            </div>
         </div>
-    </section> --}}
+    </section>
+
+    <!-- Grafik Stok Inventory -->
+    <section class="mt-6 mb-10">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <h3 class="text-lg font-bold text-slate-700 mb-4">Statistik Stok Produk di Inventory</h3>
+            <div class="w-full relative h-[400px]">
+                <canvas id="inventoryStockChart"></canvas>
+            </div>
+        </div>
+    </section>
 
 </div>
+
+<!-- Tambahkan Chart.js melalui CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil data dari model dan parsing langsung ke JSON Object
+        const rawData = @json(\App\Models\Barang::select('kategori_id', \Illuminate\Support\Facades\DB::raw('count(*) as total'))->groupBy('kategori_id')->with('kategori')->get());
+        
+        // Map data menggunakan JavaScript
+        const labels = rawData.map(item => item.kategori ? item.kategori.nama_kategori : 'Tanpa Kategori');
+        const values = rawData.map(item => item.total);
+
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Jumlah Produk',
+                    data: values,
+                    backgroundColor: 'rgba(6, 155, 192, 0.7)',
+                    borderColor: 'rgba(6, 155, 192, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Ambil data status pesanan dari model Penjualan
+        const rawOrderStatusData = @json(\App\Models\Penjualan::select('status', \Illuminate\Support\Facades\DB::raw('count(*) as total'))->groupBy('status')->get());
+        
+        // Map data status
+        const statusLabels = rawOrderStatusData.map(item => item.status.toUpperCase());
+        const statusValues = rawOrderStatusData.map(item => item.total);
+        
+        // Berikan warna spesifik sesuai jenis statusnya (Proses=Kuning/Orange, Selesai=Hijau, Batal=Merah)
+        const statusColors = rawOrderStatusData.map(item => {
+            if(item.status === 'proses') return 'rgba(245, 158, 11, 0.7)'; // Amber
+            if(item.status === 'selesai') return 'rgba(34, 197, 94, 0.7)'; // Green
+            if(item.status === 'batal') return 'rgba(239, 68, 68, 0.7)'; // Red
+            return 'rgba(156, 163, 175, 0.7)'; // Gray (Fallback)
+        });
+
+        const ctxStatus = document.getElementById('orderStatusChart').getContext('2d');
+        const orderStatusChart = new Chart(ctxStatus, {
+            type: 'doughnut', // Menggunakan tipe Donat
+            data: {
+                labels: statusLabels,
+                datasets: [{
+                    label: 'Jumlah Pesanan',
+                    data: statusValues,
+                    backgroundColor: statusColors,
+                    borderWidth: 0, // Dibuat 0 agar tampil lebih modern tanpa border
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // Ambil data stok barang (Diurutkan dari stok terbanyak)
+        // Menggunakan limit take(20) opsional jika produk terlalu banyak agar grafik tetap rapi
+        const rawStockData = @json(\App\Models\Barang::select('nama_barang', 'stok')->orderBy('stok', 'desc')->take(20)->get());
+        
+        const stockLabels = rawStockData.map(item => item.nama_barang);
+        const stockValues = rawStockData.map(item => item.stok);
+
+        const ctxStock = document.getElementById('inventoryStockChart').getContext('2d');
+        const inventoryStockChart = new Chart(ctxStock, {
+            type: 'bar',
+            data: {
+                labels: stockLabels,
+                datasets: [{
+                    label: 'Jumlah Stok Aktual',
+                    data: stockValues,
+                    backgroundColor: 'rgba(28, 78, 128, 0.7)', // Warna navy selaras dengan tema #1C4E80
+                    borderColor: 'rgba(28, 78, 128, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+</script>
 
 @endsection

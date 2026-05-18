@@ -19,7 +19,8 @@ class AdminController extends Controller
         $total = Barang::count();
         $order = Penjualan::count();
         $category = Kategori::count();
-        return view('admin.dashboard', compact(['total', 'order', 'category']));
+        $totalStok = Barang::sum('stok');
+        return view('admin.dashboard', compact(['total', 'order', 'category', 'totalStok']));
     }
 
     public function inventory()
@@ -139,10 +140,12 @@ class AdminController extends Controller
     {
         // dd('Pengujian Javascript');
         $request->validate([
-            'nama_kategori' => 'required|string',
+            'kode_kategori' => 'required|string|unique:kategoris,kode_kategori',
+            'nama_kategori' => 'required|string|unique:kategoris,nama_kategori',
         ]);
 
         Kategori::create([
+            'kode_kategori' => $request->kode_kategori,
             'nama_kategori' => $request->nama_kategori,
         ]);
 
@@ -158,12 +161,14 @@ class AdminController extends Controller
     public function updateCategory(Request $request, $id)
     {
         $request->validate([
-            'nama_kategori' => 'required|string',
+            'kode_kategori' => 'required|string|unique:kategoris,kode_kategori,' . $id,
+            'nama_kategori' => 'required|string|unique:kategoris,nama_kategori,' . $id,
         ]);
 
         $kategori = Kategori::findOrFail($id);
 
         $kategori->update([
+            'kode_kategori' => $request->kode_kategori,
             'nama_kategori' => $request->nama_kategori,
         ]);
 
