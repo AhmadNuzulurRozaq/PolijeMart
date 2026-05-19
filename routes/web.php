@@ -51,6 +51,9 @@ Route::middleware(['user', 'verified'])->group(function () {
     Route::post('/customer/cart/{id}/add', [UserController::class, 'cartAdd'])->name('customer.cartAdd');
     Route::get('/customer/cart/{id}/remove', [UserController::class, 'cartRemove'])->name('customer.cartRemove');
     Route::post('/customer/checkout/cart', [UserController::class, 'checkoutCart'])->name('customer.checkoutCart');
+    Route::get('/customer/about', function () {
+        return view('customer.about');
+    })->name('customer.about');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

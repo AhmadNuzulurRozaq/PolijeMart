@@ -98,7 +98,7 @@
                     LOG OUT
                 </button>
             </form> --}}
-            <span class="text-xs italic">Sistem Informasi Penjualan Polije Mart<br>
+            <span class="text-xs italic">Sistem Informasi Jual Beli Polije Mart<br>
                 Open Source IV | v1-2026.05
             </span>
         </div>

@@ -180,6 +180,7 @@ new class extends Component
                         <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">NO. PESANAN</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">NAMA PEMBELI</th>
+                        <th class="p-4 text-sm font-semibold tracking-wide">NO. TELEPON</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TANGGAL</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">DETAIL BARANG</th>
                         <th class="p-4 text-sm font-semibold tracking-wide">TOTAL BELANJA</th>
@@ -194,6 +195,7 @@ new class extends Component
                         <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
                         <td class="p-4 font-mono text-sm text-[#1C4E80] font-bold">{{ $item->nomor_pesanan ?? '-' }}</td>
                         <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
+                        <td class="p-4 text-sm text-slate-600 font-medium">{{ $item->user->nomor_telepon ?? '-' }}</td>
                         <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
                         <td class="p-4 text-sm">
                             @foreach($item->detail_penjualans as $detail)
@@ -298,7 +300,7 @@ new class extends Component
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center p-8 text-slate-500">
+                        <td colspan="10" class="text-center p-8 text-slate-500">
                             <div class="flex flex-col items-center justify-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="text-slate-300" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2l4-4"/></svg>
                                 <span class="font-medium">Tidak ada order yang masuk saat ini</span>

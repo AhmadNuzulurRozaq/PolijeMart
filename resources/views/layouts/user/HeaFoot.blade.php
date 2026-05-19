@@ -96,7 +96,7 @@
                 <div class="flex items-center gap-2 sm:gap-4">
                     
                     <!-- Search Icon Mobile Only -->
-                    <button class="md:hidden p-2 text-white hover:bg-white/10 rounded-full transition-colors">
+                    <button id="mobileSearchBtn" class="md:hidden p-2 text-white hover:bg-white/10 rounded-full transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"/></svg>
                     </button>
 
@@ -149,6 +149,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Search Bar (Toggled) -->
+        <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-4 w-full bg-gradient-to-r from-[#1C4E80] to-[#0a233b]">
+            <form action="{{ route('customer.allProduct') }}" method="GET" class="relative group w-full">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    class="w-full bg-white/10 border border-white/20 text-white placeholder-white/70 px-5 py-2.5 rounded-full outline-none focus:bg-white focus:text-slate-800 focus:placeholder-slate-400 transition-all duration-300 shadow-sm" 
+                    placeholder="Cari produk yang Anda butuhkan...">
+                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-white group-focus-within:text-[#069BC0] transition-colors p-1 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"/></svg>
+                </button>
+            </form>
+        </div>
     </header>
 
     <!-- Main Content -->
@@ -162,7 +174,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-8 grayscale opacity-70">
-                <span class="italic text-xs tracking-wide text-white">Sistem Informasi Penjualan Polije Mart <br>
+                <span class="italic text-xs tracking-wide text-white">Sistem Informasi Jual Beli Polije Mart <br>
                     Open Source IV | v1-2026.05
                 </span>
             </div>
@@ -170,9 +182,7 @@
                 &copy; {{ date('Y') }} Polije Mart. All Rights Reserved.
             </div>
             <div class="flex gap-4">
-                <a href="#" class="hover:text-white transition-colors">Bantuan</a>
-                <a href="#" class="hover:text-white transition-colors">Privasi</a>
-                <a href="#" class="hover:text-white transition-colors">Syarat</a>
+                <a href="{{ route('customer.about') }}" class="hover:text-white transition-colors">Tentang Kami</a>
             </div>
         </div>
     </footer>
@@ -203,10 +213,27 @@
             event.stopPropagation();
         });
 
+        // Fungsionalitas Mobile Search
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+        const mobileSearchBar = document.getElementById('mobileSearchBar');
+
+        mobileSearchBtn.addEventListener('click', (event) => {
+            mobileSearchBar.classList.toggle('hidden');
+            if (!mobileSearchBar.classList.contains('hidden')) {
+                setTimeout(() => {
+                    mobileSearchBar.querySelector('input').focus();
+                }, 50);
+            }
+            event.stopPropagation();
+        });
+
         // Menutup dropdown jika klik di luar elemen
         window.addEventListener('click', (event) => {
             if (!userDropdown.contains(event.target) && !userMenuBtn.contains(event.target) && !userDropdown.classList.contains('hidden')) {
                 toggleUserMenu();
+            }
+            if (mobileSearchBar && !mobileSearchBar.contains(event.target) && !mobileSearchBtn.contains(event.target) && !mobileSearchBar.classList.contains('hidden')) {
+                mobileSearchBar.classList.add('hidden');
             }
         });
     </script>

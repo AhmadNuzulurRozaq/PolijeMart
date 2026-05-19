@@ -32,8 +32,7 @@
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="p-4 text-center font-medium">{{ $orders->firstItem() + $loop->index }}</td>
                         
-                        <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d M Y, H:i') }}</td>
-
+                        <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
                         <td class="p-4 text-center font-medium">{{ $item->nomor_pesanan ?? '-' }}</td>
                         
                         <td class="p-4 text-sm">
