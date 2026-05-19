@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/SweetAlert2.js'])
     @livewireStyles
     <title>@yield('title', 'Polije Mart')</title>
+
     <style>
         /* Animasi kustom untuk konten yang baru di-load */
         .fade-in-up {

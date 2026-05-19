@@ -71,7 +71,6 @@
     <div class="mb-8 sm:mb-10">
         <div class="flex items-center justify-between mb-6">
             <h2 class="font-extrabold text-lg sm:text-xl text-slate-800 tracking-tight">Kategori Populer</h2>
-            <a href="#" class="text-sm font-bold text-[#069BC0] hover:text-[#1C4E80] transition-colors">Lihat Semua</a>
         </div>
         
         <div class="flex justify-start sm:justify-center gap-4 sm:gap-6 md:gap-10 overflow-x-auto pb-4 snap-x custom-scrollbar">

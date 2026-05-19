@@ -48,7 +48,7 @@ class UserController extends Controller
     public function detailProduct($id)
     {
 
-        $product = Barang::findOrFail($id);
+        $product = Barang::find($id);
         return view('customer.detail', compact('product'));
     }
 
@@ -109,7 +109,12 @@ class UserController extends Controller
 
     public function checkoutProduct(Request $request, $id)
     {
+        if (empty(Auth::user()->alamat) || empty(Auth::user()->nomor_telepon)) {
+            return redirect()->route('profile.edit')->with('error', 'Silakan lengkapi Alamat dan Nomor Telepon Anda di profil terlebih dahulu sebelum melakukan checkout.');
+        }
+
         $product = Barang::findOrFail($id);
+        
         $jumlah = $request->jumlah ?? 1;
 
         if ($jumlah > $product->stok) {
@@ -132,6 +137,10 @@ class UserController extends Controller
 
     public function checkoutCart(Request $request)
     {
+        if (empty(Auth::user()->alamat) || empty(Auth::user()->nomor_telepon)) {
+            return redirect()->route('profile.edit')->with('error', 'Silakan lengkapi Alamat dan Nomor Telepon Anda di profil terlebih dahulu sebelum melakukan checkout.');
+        }
+
         $selectedItems = $request->selected_items; // Array id barang yang di ceklis
         if (!$selectedItems) {
             return redirect()->back()->with('error', 'Pilih minimal satu produk untuk di-checkout.');
@@ -158,6 +167,9 @@ class UserController extends Controller
 
     public function checkoutStore(Request $request)
     {
+        if (empty(Auth::user()->alamat) || empty(Auth::user()->nomor_telepon)) {
+            return redirect()->route('profile.edit')->with('error', 'Silakan lengkapi Alamat dan Nomor Telepon Anda di profil terlebih dahulu sebelum melakukan checkout.');
+        }
 
         DB::beginTransaction();
 
