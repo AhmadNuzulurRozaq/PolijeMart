@@ -178,8 +178,15 @@ class AdminController extends Controller
     public function destroyCategory($id)
     {
         $kategori = Kategori::findOrFail($id);
+
+        // Cek apakah ada barang yang menggunakan kategori ini
+        $barangTerkait = Barang::where('kategori_id', $id)->count();
+        if ($barangTerkait > 0) {
+            return redirect()->route('admin.manageCategory')->with('error', "Gagal dihapus! Terdapat $barangTerkait barang yang masih menggunakan kategori ini.");
+        }
+
         $kategori->delete();
-        return redirect()->route('admin.inventory')->with('status', 'Kategori berhasil dihapus!');
+        return redirect()->route('admin.manageCategory')->with('status', 'Kategori berhasil dihapus!');
     }
 
     public function manageOrder()

@@ -49,6 +49,28 @@ new class extends Component
             }, 3000); // Memulai animasi menghilang setelah 1000 milidetik (1 detik)
         </script>
     @endif
+
+    @if(session('error'))
+        <div id="alert-error" class="mb-6 flex items-center justify-between p-4 text-sm font-semibold text-red-800 border border-red-200 rounded-xl bg-red-50 shadow-sm transition-opacity duration-500 ease-in-out">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                {{ session('error') }}
+            </div>
+            <button type="button" onclick="document.getElementById('alert-error').style.display='none'" class="text-red-600 hover:text-red-800 focus:outline-none transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <script>
+            setTimeout(() => {
+                const alert = document.getElementById('alert-error');
+                if (alert) {
+                    alert.classList.add('opacity-0');
+                    setTimeout(() => alert.remove(), 500);
+                }
+            }, 5000); // Waktu di set 5 detik (5000ms) agar admin punya cukup waktu membaca error
+        </script>
+    @endif
+
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
             <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">KELOLA KATEGORI</h1>
