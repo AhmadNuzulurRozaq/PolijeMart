@@ -28,92 +28,133 @@ new class extends Component
 };
 ?>
 
-<div class="w-full max-w-7xl mx-auto">
+<div class="w-full max-w-7xl mx-auto px-1 fade-in-up">
     @if(session('status'))
-        <div id="alert-status" class="mb-6 flex items-center justify-between p-4 text-sm font-semibold text-green-800 border border-green-200 rounded-xl bg-green-50 shadow-sm transition-opacity duration-500 ease-in-out">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m10 16.4l-4-4L7.4 11l2.6 2.6L16.6 7L18 8.4z"/></svg>
-                {{ session('status') }}
+        <div id="alert-status" class="mb-6 flex items-center justify-between p-4 text-sm font-semibold text-emerald-800 border border-emerald-100 rounded-2xl bg-emerald-50/80 backdrop-blur-md shadow-premium transition-all duration-500 ease-in-out">
+            <div class="flex items-center gap-2.5">
+                <div class="p-1 bg-emerald-500 text-white rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>{{ session('status') }}</span>
             </div>
-            <button type="button" onclick="document.getElementById('alert-status').style.display='none'" class="text-green-600 hover:text-green-800 focus:outline-none transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
+            <button type="button" onclick="document.getElementById('alert-status').style.display='none'" class="text-emerald-600 hover:text-emerald-800 focus:outline-none transition-colors p-1 hover:bg-emerald-100 rounded-lg cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
         <script>
             setTimeout(() => {
                 const alert = document.getElementById('alert-status');
                 if (alert) {
-                    alert.classList.add('opacity-0');
-                    setTimeout(() => alert.remove(), 500); // Menghapus elemen setelah animasi transisi fade-out selesai
+                    alert.classList.add('opacity-0', 'translate-y-[-10px]');
+                    setTimeout(() => alert.remove(), 500);
                 }
-            }, 3000); // Memulai animasi menghilang setelah 1000 milidetik (1 detik)
+            }, 3000);
         </script>
     @endif
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
-            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">KELOLA INVENTORI</h1>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Total: <span class="text-[#1C4E80] font-bold">{{ $total }}</span> Item</p>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight bg-gradient-to-r from-primary-950 to-primary-800 bg-clip-text text-transparent uppercase">Kelola Inventori</h1>
+            <p class="text-sm text-slate-500 mt-1.5 font-medium flex items-center gap-2">
+                <span>Daftar persediaan barang toko</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-primary-50 text-primary-700 border border-primary-100">{{ $total }} Item</span>
+            </p>
         </div>
         
-        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <!-- Controls: Search & Add button inside glass panel -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto bg-white/70 backdrop-blur p-2.5 rounded-2xl border border-slate-200/50 shadow-sm">
             <div class="relative w-full sm:w-auto">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </div>
-                <input type="text" wire:model.live="search" class="w-full sm:w-64 pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all text-sm" placeholder="Cari barang atau kode..." required>
+                <input type="text" wire:model.live="search" class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-slate-50/50 border border-slate-200/80 rounded-xl outline-none focus:border-secondary-500 focus:bg-white focus:ring-4 focus:ring-secondary-500/10 hover:border-slate-350 transition-all text-sm font-medium text-slate-800 placeholder-slate-400" placeholder="Cari barang atau kode...">
             </div>
             
-            <a href="{{ route('admin.addData') }}" class="w-full sm:w-auto bg-[#15C11B] py-2.5 px-4 text-white rounded-xl hover:bg-[#12a617] active:bg-[#0f8f14] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 flex items-center justify-center gap-2 font-semibold text-sm cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
+            <a href="{{ route('admin.addData') }}" class="w-full sm:w-auto bg-gradient-to-r from-secondary-700 to-secondary-500 py-2.5 px-5 text-white rounded-xl hover:brightness-105 active:scale-[0.98] transition-all duration-200 shadow-md shadow-secondary-500/25 flex items-center justify-center gap-2 font-bold text-sm cursor-pointer tracking-wider">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 <span>TAMBAH PRODUK</span>
             </a>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left whitespace-nowrap">
-                <thead class="bg-[#1C4E80] text-white">
-                    <tr>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">KODE</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">NAMA</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">DESKRIPSI</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">STOK</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">KATEGORI</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">HARGA</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">AKSI</th>
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl shadow-premium border border-slate-100 overflow-hidden mb-8">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-white uppercase text-[11px] font-black tracking-wider" style="background-image: linear-gradient(to right, #0a1b30, #112e4d);">
+                        <th class="p-4.5 text-center w-16">NO</th>
+                        <th class="p-4.5">KODE</th>
+                        <th class="p-4.5">NAMA PRODUK</th>
+                        <th class="p-4.5">DESKRIPSI</th>
+                        <th class="p-4.5 text-center">STOK</th>
+                        <th class="p-4.5">KATEGORI</th>
+                        <th class="p-4.5">HARGA</th>
+                        <th class="p-4.5 text-center">AKSI</th>
                     </tr>
                 </thead>
-                <tbody class="text-slate-700 divide-y divide-slate-100">
+                <tbody class="text-slate-650 divide-y divide-slate-100/70 text-sm">
                     @forelse($barang as $item)
-                    <tr class="hover:bg-slate-50 transition-colors group">
-                        <td class="p-4 text-center font-medium">{{ $barang->firstItem() + $loop->index }}</td>
-                        <td class="p-4"><span class="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-mono font-bold">{{ $item->kode_barang }}</span></td>
-                        <td class="p-4 font-bold text-slate-800">{{ $item->nama_barang }}</td>
-                        <td class="p-4"><span class="truncate block max-w-[150px]" title="{{ $item->deskripsi }}">{{ $item->deskripsi }}</span></td>
-                        <td class="p-4 text-center">
-                            <span class="@if($item->stok < 5) text-red-600 @else text-green-600 @endif font-bold">
-                                {{ $item->stok }}
-                            </span>
+                    <tr class="hover:bg-slate-50/50 transition-colors group">
+                        <td class="p-4 text-center font-bold text-slate-400">{{ $barang->firstItem() + $loop->index }}</td>
+                        <td class="p-4">
+                            <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-mono font-extrabold border border-slate-200/50 tracking-wide">{{ $item->kode_barang }}</span>
                         </td>
-                        <td class="p-4"><span class="bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded-md text-xs font-semibold">{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}</span></td>
-                        <td class="p-4 font-bold">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
+                        <td class="p-4 font-extrabold text-slate-800 group-hover:text-primary-800 transition-colors">{{ $item->nama_barang }}</td>
+                        <td class="p-4 max-w-[200px]">
+                            <span class="truncate block text-slate-500 font-medium" title="{{ $item->deskripsi }}">{{ $item->deskripsi }}</span>
+                        </td>
+                        <td class="p-4 text-center">
+                            @if($item->stok < 5)
+                                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-black bg-rose-50 text-rose-600 border border-rose-100 shadow-sm relative overflow-hidden select-none">
+                                    <span class="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping"></span>
+                                    <span>Hampir Habis ({{ $item->stok }})</span>
+                                </div>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-600 border border-emerald-100 select-none">
+                                    {{ $item->stok }} Pcs
+                                </span>
+                            @endif
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-primary-50 text-primary-700 border border-primary-100/60 px-2.5 py-1 rounded-lg text-xs font-extrabold uppercase tracking-wider">{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}</span>
+                        </td>
+                        <td class="p-4 font-black text-slate-800">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
                         <td class="p-4">
                             <div class="flex gap-2 justify-center items-center">
-                                <a href="{{ route('admin.editData', $item->id) }}" class="bg-[#0091D5] flex gap-1 p-2 items-center hover:bg-[#007cb5] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z" /></svg>
+                                <!-- Edit Button -->
+                                <a href="{{ route('admin.editData', $item->id) }}" class="bg-slate-50 text-[#0091D5] hover:bg-[#0091D5] hover:text-white p-2 border border-slate-200/80 hover:border-[#0091D5] transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center" title="Edit Barang">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"></path></svg>
                                 </a>
                                 
-                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ addslashes(str_replace(["\r", "\n"], " ", $item->deskripsi)) }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-[#EA6A47] flex gap-1 p-2 items-center hover:bg-[#d65f3f] transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" /><path d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" /></g></svg>
+                                <!-- Detail Button -->
+                                <button type="button" onclick="showDetailModal('{{ $item->kode_barang }}', '{{ addslashes($item->nama_barang) }}', '{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}', 'Rp {{ number_format($item->harga, 0, ',', '.') }}', '{{ $item->stok }}', '{{ addslashes(str_replace(["\r", "\n"], " ", $item->deskripsi)) }}', '{{ $item->image ? asset('storage/' . $item->image) : '' }}')" class="bg-slate-50 text-[#EA6A47] hover:bg-[#EA6A47] hover:text-white p-2 border border-slate-200/80 hover:border-[#EA6A47] transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center cursor-pointer" title="Detail Barang">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                                 </button>
-
+ 
+                                <!-- Delete Button -->
                                 <form action="{{ route('admin.destroyData', $item->id) }}" method="POST" class="inline-block form-delete">
                                     @csrf
                                     @method('delete')
-                                    <button class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
+                                    <button type="button" @click="
+                                        let form = $el.closest('form');
+                                        Swal.fire({
+                                            title: 'Hapus Produk?',
+                                            text: 'Anda akan menghapus produk ini dari database secara permanen!',
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#ef4444',
+                                            cancelButtonColor: '#64748b',
+                                            confirmButtonText: 'Ya, Hapus!',
+                                            cancelButtonText: 'Batal'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                form.submit();
+                                            }
+                                        })
+                                    " class="bg-slate-50 text-red-500 hover:bg-red-500 hover:text-white p-2 border border-slate-200/80 hover:border-red-500 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center cursor-pointer" title="Hapus Barang">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                     </button>
                                 </form>
                             </div>
@@ -121,10 +162,13 @@ new class extends Component
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center p-8 text-slate-500">
-                            <div class="flex flex-col items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="text-slate-300" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
-                                <span class="font-medium">Barang tidak ditemukan</span>
+                        <td colspan="8" class="text-center py-14 text-slate-400 bg-slate-50/20">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <div class="p-3.5 bg-slate-100 rounded-full border border-slate-200/50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" class="text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                </div>
+                                <span class="font-bold text-slate-550">Produk inventori kosong atau tidak ditemukan</span>
+                                <p class="text-xs text-slate-400 max-w-sm leading-relaxed">Coba ubah kata kunci pencarian Anda atau tambahkan produk baru.</p>
                             </div>
                         </td>
                     </tr>
@@ -134,61 +178,79 @@ new class extends Component
         </div>
         
         @if($barang->hasPages())
-        <div class="p-4 border-t border-slate-100 bg-slate-50">
+        <div class="p-5 border-t border-slate-100 bg-slate-50/50">
             {{ $barang->links() }}
         </div>
         @endif
     </div>
 
+    <!-- Redesigned Ultra-Premium Modal -->
     <div wire:ignore>
-        <div id="detailModal" class="fixed inset-0 z-[9999] items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-in-out opacity-0 hidden">
+        <div id="detailModal" class="fixed inset-0 z-[9999] items-center justify-center bg-slate-950/60 backdrop-blur-md transition-opacity duration-300 ease-in-out opacity-0 hidden">
             
-            <div id="modalContent" class="w-[90%] md:w-[500px] max-h-[90vh] overflow-y-auto p-6 bg-white rounded-2xl shadow-2xl transition-all duration-300 ease-in-out opacity-0 scale-95 transform">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-extrabold text-[#1C4E80]">DETAIL PRODUK</h2>
-                    <button type="button" onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors p-1 bg-slate-100 hover:bg-red-50 rounded-full cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
+            <div id="modalContent" class="w-[92%] md:w-[540px] max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl transition-all duration-300 ease-in-out opacity-0 scale-95 transform border border-slate-100 flex flex-col custom-scrollbar">
+                
+                <!-- Modal Top Header -->
+                <div class="p-6 text-white flex justify-between items-center shrink-0" style="background-image: linear-gradient(to right, #0a1b30, #112e4d);">
+                    <div>
+                        <span class="text-[10px] bg-white/20 text-white border border-white/10 px-2 py-0.5 rounded font-extrabold uppercase tracking-widest block mb-0.5" id="modalKode"></span>
+                        <h2 class="text-lg font-black tracking-wide">DETAIL SPESIFIKASI</h2>
+                    </div>
+                    <button type="button" onclick="closeModal()" class="text-white/80 hover:text-white transition-all p-1.5 bg-white/10 hover:bg-white/20 rounded-xl cursor-pointer hover:rotate-90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
-                <hr class="border-slate-100 mb-6">
                 
-                <div class="flex flex-col gap-4 text-slate-700">
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Kode Barang</p>
-                        <h3 id="modalKode" class="col-span-2 font-bold font-mono"></h3>
+                <!-- Modal Body -->
+                <div class="p-6 md:p-8 space-y-6 overflow-y-auto">
+                    <!-- Image Showcase Section -->
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200/60 p-3 flex justify-center items-center min-h-[220px] shadow-inner relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/5 to-transparent z-10"></div>
+                        <img id="modalGambar" src="" alt="Gambar Produk" class="hidden max-h-[200px] w-auto object-contain rounded-xl drop-shadow-md group-hover:scale-105 transition-transform duration-300 relative z-20">
+                        <div id="noGambarText" class="text-slate-400 text-sm font-bold flex flex-col items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" class="text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <span>Gambar tidak tersedia</span>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Nama Produk</p>
-                        <h3 id="modalNama" class="col-span-2 font-bold text-lg"></h3>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Kategori</p>
-                        <h3 id="modalKategori" class="col-span-2 font-semibold"></h3>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Harga</p>
-                        <h3 id="modalHarga" class="col-span-2 font-extrabold text-[#15C11B]"></h3>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Stok</p>
-                        <h3 id="modalStok" class="col-span-2 font-bold"></h3>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <p class="text-sm font-medium text-slate-500">Deskripsi</p>
-                        <h3 id="modalDeskripsi" class="col-span-2 font-bold"></h3>
-                    </div>
-                    <div class="mt-2">
-                        <p class="text-sm font-medium text-slate-500 mb-2">Gambar Produk</p>
-                        <div class="bg-slate-50 rounded-xl border border-slate-200 p-2 flex justify-center items-center min-h-[150px]">
-                            <img id="modalGambar" src="" alt="Gambar Produk" class="hidden max-h-[200px] object-contain rounded-lg">
-                            <span id="noGambarText" class="text-slate-400 text-sm font-medium">Tidak ada gambar</span>
+
+                    <!-- Details Fields Grid -->
+                    <div class="space-y-4">
+                        <div class="pb-3.5 border-b border-slate-100 flex justify-between items-start gap-4">
+                            <div>
+                                <span class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider block">Nama Produk</span>
+                                <h3 id="modalNama" class="font-extrabold text-slate-800 text-lg leading-tight mt-0.5"></h3>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 pb-3.5 border-b border-slate-100">
+                            <div>
+                                <span class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider block">Kategori</span>
+                                <span id="modalKategori" class="inline-block mt-1 bg-primary-50 text-primary-700 border border-primary-100/50 px-2.5 py-0.5 rounded text-xs font-black uppercase"></span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider block">Stok Tersedia</span>
+                                <span id="modalStok" class="inline-block mt-1 font-extrabold text-sm text-slate-800"></span>
+                            </div>
+                        </div>
+
+                        <div class="pb-3.5 border-b border-slate-100">
+                            <span class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider block">Harga Jual</span>
+                            <h4 id="modalHarga" class="font-black text-xl text-secondary-600 mt-1 leading-none"></h4>
+                        </div>
+
+                        <div>
+                            <span class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1">Deskripsi</span>
+                            <p id="modalDeskripsi" class="text-xs text-slate-500 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-100/80"></p>
                         </div>
                     </div>
                 </div>
 
-                <button type="button" onclick="closeModal()" class="w-full mt-8 px-4 py-3 text-white font-semibold bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors shadow-md cursor-pointer">
-                    Tutup Detail
-                </button>
+                <!-- Modal Footer -->
+                <div class="p-6 bg-slate-50 border-t border-slate-100 flex gap-3 shrink-0">
+                    <button type="button" onclick="closeModal()" class="w-full px-5 py-3 text-white font-extrabold bg-slate-800 hover:bg-slate-700 active:bg-slate-900 rounded-xl transition-all shadow-md active:scale-[0.98] cursor-pointer tracking-wider text-xs uppercase">
+                        Tutup Detail
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -199,7 +261,6 @@ new class extends Component
         const imgElement = document.getElementById('modalGambar');
         const noImgText = document.getElementById('noGambarText');
 
-        // FUNGI UTAMA: Teleport (pindahkan) modal ke <body> agar terbebas dari jeratan CSS Transform pada parent.
         document.addEventListener("DOMContentLoaded", () => {
             if (detailModal && detailModal.parentNode !== document.body) {
                 document.body.appendChild(detailModal);
@@ -207,17 +268,16 @@ new class extends Component
         });
 
         function showDetailModal(kode, nama, kategori, harga, stok, deskripsi, imageUrl) {
-            // Pengaman ekstra jika modal belum pindah ke body
             if (detailModal.parentNode !== document.body) {
                 document.body.appendChild(detailModal);
             }
             
-            // Isi Data
+            // Populate
             document.getElementById('modalKode').innerText = kode;
             document.getElementById('modalNama').innerText = nama;
             document.getElementById('modalKategori').innerText = kategori;
             document.getElementById('modalHarga').innerText = harga;
-            document.getElementById('modalStok').innerText = stok;
+            document.getElementById('modalStok').innerText = stok + ' Pcs';
             document.getElementById('modalDeskripsi').innerText = deskripsi;
             
             if(imageUrl) {
@@ -229,9 +289,9 @@ new class extends Component
                 noImgText.classList.remove('hidden');
             }
 
-            // Animasi Masuk (Tampilkan block dulu, baru opacity)
+            // Animate In
             detailModal.classList.remove('hidden');
-            detailModal.classList.add('flex'); // Pakai flex agar otomatis align center
+            detailModal.classList.add('flex');
             
             setTimeout(() => {
                 detailModal.classList.remove('opacity-0');
@@ -240,17 +300,15 @@ new class extends Component
         }
 
         function closeModal() {
-            // Animasi Keluar
             detailModal.classList.add('opacity-0');
             modalContent.classList.add('opacity-0', 'scale-95');
             
             setTimeout(() => {
                 detailModal.classList.add('hidden');
-                detailModal.classList.remove('flex'); // Matikan flex agar benar-benar tersembunyi
+                detailModal.classList.remove('flex');
             }, 300);
         }
 
-        // Tutup jika area background blur di klik
         detailModal.addEventListener('click', function(e) {
             if(e.target === detailModal) {
                 closeModal();

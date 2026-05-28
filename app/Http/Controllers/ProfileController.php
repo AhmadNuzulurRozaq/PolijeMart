@@ -32,21 +32,36 @@ class ProfileController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($request->user()->id)],
             'nomor_telepon' => ['nullable', 'string', 'min:10' ,'max:12', 'regex:/^(0|62|\+62)8[1-9][0-9]{6,11}$/'],
             'alamat' => ['nullable', 'string'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ], 
         [
             'nomor_telepon.min' => 'Jumlah digit minimal 8 angka dan maksimal 12 angka',
             'nomor_telepon.max' => 'Jumlah digit minimal 8 angka dan maksimal 12 angka',
-            'nomor_telepon.regex' => 'Fromat telepon tidak valid',
+            'nomor_telepon.regex' => 'Format telepon tidak valid',
+            'avatar.image' => 'File harus berupa gambar',
+            'avatar.mimes' => 'Gambar harus berformat jpeg, png, jpg, atau gif',
+            'avatar.max' => 'Ukuran gambar maksimal adalah 2MB',
         ]
         );
 
-        $request->user()->fill($validated);
+        $user = $request->user();
+        $user->fill($validated);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            if ($user->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+            // Store new avatar
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
         }
 
-        $request->user()->save();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

@@ -140,95 +140,117 @@ new class extends Component
 };
 ?>
 
-<div class="w-full max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<div class="w-full max-w-7xl mx-auto px-1 fade-in-up">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
-            <h1 class="font-extrabold text-2xl text-slate-800 tracking-tight">KELOLA PESANAN</h1>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Total: <span class="text-[#1C4E80] font-bold">{{ $total }}</span> Pesanan</p>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight bg-gradient-to-r from-primary-950 to-primary-800 bg-clip-text text-transparent uppercase">Kelola Pesanan</h1>
+            <p class="text-sm text-slate-500 mt-1.5 font-medium flex items-center gap-2">
+                <span>Daftar pesanan dari pelanggan</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-primary-50 text-primary-700 border border-primary-100">{{ $total }} Pesanan</span>
+            </p>
         </div>
         
-        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <!-- Controls: Search inside glass panel -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto bg-white/70 backdrop-blur p-2.5 rounded-2xl border border-slate-200/50 shadow-sm">
             <div class="relative w-full sm:w-auto">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </div>
-                <input type="text" wire:model.live="search" class="w-full sm:w-64 pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#1C4E80] focus:ring-2 focus:ring-[#1C4E80]/20 transition-all text-sm" placeholder="Cari nama pembeli..." required>
+                <input type="text" wire:model.live="search" class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-slate-50/50 border border-slate-200/80 rounded-xl outline-none focus:border-secondary-500 focus:bg-white focus:ring-4 focus:ring-secondary-500/10 hover:border-slate-350 transition-all text-sm font-medium text-slate-800 placeholder-slate-400" placeholder="Cari nama pembeli...">
             </div>
         </div>
     </div>
 
-    {{-- AREA FLASH MESSAGE UNTUK MENAMPILKAN UMPAN BALIK KE ADMIN --}}
+    <!-- Flash Messages -->
     @if(session()->has('status'))
-        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-green-50 text-green-600 border border-green-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <span class="font-semibold">{{ session('status') }}</span>
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3500)" x-transition.duration.500ms class="mb-6 bg-emerald-50/80 backdrop-blur border border-emerald-100 px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-premium text-emerald-800 text-sm font-semibold">
+            <div class="p-1 bg-emerald-500 text-white rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <span>{{ session('status') }}</span>
         </div>
     @endif
     
     @if(session()->has('error'))
-        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition.duration.500ms class="mb-6 bg-red-50 text-red-600 border border-red-200 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-            <span class="font-semibold">{{ session('error') }}</span>
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3500)" x-transition.duration.500ms class="mb-6 bg-rose-50/80 backdrop-blur border border-rose-100 px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-premium text-rose-800 text-sm font-semibold">
+            <div class="p-1 bg-rose-500 text-white rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <span>{{ session('error') }}</span>
         </div>
     @endif
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left whitespace-nowrap">
-                <thead class="bg-[#1C4E80] text-white">
-                    <tr>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">NO</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">NO. PESANAN</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">NAMA PEMBELI</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">NO. TELEPON</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">TANGGAL</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">DETAIL BARANG</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide">TOTAL BELANJA</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">STATUS</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">BATAS AMBIL</th>
-                        <th class="p-4 text-sm font-semibold tracking-wide text-center">AKSI</th>
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl shadow-premium border border-slate-100 overflow-hidden mb-8">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-white uppercase text-[10px] font-black tracking-wider whitespace-nowrap" style="background-image: linear-gradient(to right, #0a1b30, #112e4d);">
+                        <th class="p-4.5 text-center w-14">NO</th>
+                        <th class="p-4.5">NO. PESANAN</th>
+                        <th class="p-4.5">NAMA PEMBELI</th>
+                        <th class="p-4.5">NO. TELEPON</th>
+                        <th class="p-4.5">TANGGAL</th>
+                        <th class="p-4.5">DETAIL BARANG</th>
+                        <th class="p-4.5">TOTAL BELANJA</th>
+                        <th class="p-4.5 text-center">STATUS</th>
+                        <th class="p-4.5 text-center">BATAS AMBIL</th>
+                        <th class="p-4.5 text-center">AKSI</th>
                     </tr>
                 </thead>
-                <tbody class="text-slate-700 divide-y divide-slate-100">
+                <tbody class="text-slate-650 divide-y divide-slate-100/70 text-sm whitespace-nowrap">
                     @forelse($penjualan as $item)
-                    <tr wire:key="order-{{ $item->id }}" class="hover:bg-slate-50 transition-colors group">
-                        <td class="p-4 text-center font-medium">{{ $penjualan->firstItem() + $loop->index }}</td>
-                        <td class="p-4 font-mono text-sm text-[#1C4E80] font-bold">{{ $item->nomor_pesanan ?? '-' }}</td>
-                        <td class="p-4 font-bold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
-                        <td class="p-4 text-sm text-slate-600 font-medium">{{ $item->user->nomor_telepon ?? '-' }}</td>
-                        <td class="p-4 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
-                        <td class="p-4 text-sm">
-                            @foreach($item->detail_penjualans as $detail)
-                                <div class="font-bold text-slate-800">
-                                    {{ $detail->barang?->nama_barang ?? 'Produk Telah Dihapus' }}
-                                    <span class="text-xs text-slate-400 font-normal">x{{ $detail->jumlah }}</span>
-                                </div>
-                            @endforeach
+                    <tr wire:key="order-{{ $item->id }}" class="hover:bg-slate-50/50 transition-colors group">
+                        <td class="p-4 text-center font-bold text-slate-400">{{ $penjualan->firstItem() + $loop->index }}</td>
+                        <td class="p-4">
+                            <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-mono font-extrabold border border-slate-200/50 tracking-wide">{{ $item->nomor_pesanan ?? '-' }}</span>
                         </td>
-                        <td class="p-4 font-bold text-[#1C4E80]">Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                        <td class="p-4 font-extrabold text-slate-800">{{ $item->user->name ?? 'User Dihapus' }}</td>
+                        <td class="p-4 font-semibold text-slate-500 text-xs">{{ $item->user->nomor_telepon ?? '-' }}</td>
+                        <td class="p-4 text-slate-500 text-xs font-semibold">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}</td>
+                        <td class="p-4 text-xs font-medium max-w-[240px] truncate">
+                            <div class="flex flex-col gap-1">
+                                @foreach($item->detail_penjualans as $detail)
+                                    <div class="text-slate-800 font-bold flex items-center gap-1.5">
+                                        <span class="inline-block w-1.5 h-1.5 bg-secondary-500 rounded-full shrink-0"></span>
+                                        <span class="truncate block max-w-[150px]">{{ $detail->barang?->nama_barang ?? 'Produk Dihapus' }}</span>
+                                        <span class="text-[10px] bg-slate-100 text-slate-500 font-extrabold px-1.5 py-0.5 rounded">x{{ $detail->jumlah }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </td>
+                        <td class="p-4 font-black text-slate-800">Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                         <td class="p-4 text-center">
                             @if($item->status == 'proses')
-                                <span class="bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">DIPROSES</span>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black bg-amber-50 text-amber-600 border border-amber-100/70 select-none uppercase tracking-wide">
+                                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                                    <span>DIPROSES</span>
+                                </span>
                             @elseif($item->status == 'selesai')
-                                <span class="bg-green-50 text-green-600 border border-green-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">SIAP DIAMBIL</span>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-600 border border-emerald-100/70 select-none uppercase tracking-wide">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    <span>SIAP DIAMBIL</span>
+                                </span>
                             @else
-                                <span class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">BATAL</span>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-400 border border-slate-200 select-none uppercase tracking-wide">
+                                    <span>BATAL</span>
+                                </span>
                             @endif
                         </td>
                         
                         <td class="p-4 text-center">
                             @if($item->status == 'selesai' && $item->batas_waktu)
-                                <span class="waktu-mundur font-mono font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md" data-waktu="{{ \Carbon\Carbon::parse($item->batas_waktu)->format('Y-m-d\TH:i:s') }}">Menghitung...</span>
+                                <span class="waktu-mundur font-mono font-bold text-xs bg-rose-50 text-rose-600 border border-rose-100 px-2.5 py-1 rounded-xl shadow-[0_2px_8px_rgba(239,68,68,0.05)]" data-waktu="{{ \Carbon\Carbon::parse($item->batas_waktu)->format('Y-m-d\TH:i:s') }}">Menghitung...</span>
                             @elseif($item->status == 'proses')
-                                <span class="text-slate-400 text-xs italic">Menunggu diproses</span>
+                                <span class="text-slate-400 text-xs italic font-medium">Menunggu diproses</span>
                             @else
-                                <span class="text-slate-300 font-bold">-</span>
+                                <span class="text-slate-300 font-extrabold">-</span>
                             @endif
                         </td>
                         
                         <td class="p-4">
                             <div class="flex justify-center gap-2">
-                                
                                 @if($item->status == 'proses')
                                     <button type="button" @click="
                                         let component = $wire;
@@ -237,8 +259,8 @@ new class extends Component
                                             text: 'Apakah pesanan ini sudah siap diambil untuk diselesaikan?',
                                             icon: 'question',
                                             showCancelButton: true,
-                                            confirmButtonColor: '#22c55e',
-                                            cancelButtonColor: '#d33',
+                                            confirmButtonColor: '#10b981',
+                                            cancelButtonColor: '#64748b',
                                             confirmButtonText: 'Ya, Selesaikan!',
                                             cancelButtonText: 'Batal'
                                         }).then((result) => {
@@ -246,8 +268,8 @@ new class extends Component
                                                 component.selesaikanPesanan({{ $item->id }});
                                             }
                                         })
-                                    " class="bg-green-500 flex gap-2 px-3 py-2 items-center justify-center hover:bg-green-600 active:bg-green-700 transition-all rounded-xl text-white font-semibold shadow-sm hover:-translate-y-0.5 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    " class="bg-slate-50 text-emerald-600 hover:bg-emerald-600 hover:text-white p-2 border border-slate-200/80 hover:border-emerald-650 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center cursor-pointer" title="Proses Pesanan (Siap Diambil)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                     </button>
                                 @endif
 
@@ -256,11 +278,11 @@ new class extends Component
                                         let component = $wire;
                                         Swal.fire({
                                             title: 'Batalkan Pesanan?',
-                                            text: 'Pesanan ini akan dibatalkan dan stok akan otomatis dikembalikan!',
+                                            text: 'Pesanan ini akan dibatalkan and stok barang akan otomatis dikembalikan!',
                                             icon: 'warning',
                                             showCancelButton: true,
-                                            confirmButtonColor: '#eab308',
-                                            cancelButtonColor: '#d33',
+                                            confirmButtonColor: '#f59e0b',
+                                            cancelButtonColor: '#64748b',
                                             confirmButtonText: 'Ya, Batalkan!',
                                             cancelButtonText: 'Tidak'
                                         }).then((result) => {
@@ -268,8 +290,8 @@ new class extends Component
                                                 component.batalkanPesanan({{ $item->id }});
                                             }
                                         })
-                                    " class="bg-yellow-500 flex gap-2 p-2 items-center justify-center hover:bg-yellow-600 active:bg-yellow-700 transition-all rounded-lg text-white font-semibold shadow-sm hover:-translate-y-0.5 cursor-pointer" title="Batalkan Pesanan Secara Manual">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                    " class="bg-slate-50 text-amber-500 hover:bg-amber-500 hover:text-white p-2 border border-slate-200/80 hover:border-amber-500 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center cursor-pointer" title="Batalkan Pesanan">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                                     </button>
                                 @endif
 
@@ -277,12 +299,12 @@ new class extends Component
                                     <button type="button" @click="
                                         let component = $wire;
                                         Swal.fire({
-                                            title: 'Apakah Anda yakin?',
-                                            text: 'Data pesanan yang dihapus tidak dapat dikembalikan!',
+                                            title: 'Hapus Pesanan?',
+                                            text: 'Data riwayat transaksi pesanan ini akan dihapus secara permanen!',
                                             icon: 'warning',
                                             showCancelButton: true,
-                                            confirmButtonColor: '#d33',
-                                            cancelButtonColor: '#3085d6',
+                                            confirmButtonColor: '#ef4444',
+                                            cancelButtonColor: '#64748b',
                                             confirmButtonText: 'Ya, Hapus!',
                                             cancelButtonText: 'Batal'
                                         }).then((result) => {
@@ -290,20 +312,22 @@ new class extends Component
                                                 component.hapusPesanan({{ $item->id }});
                                             }
                                         })
-                                    " class="bg-red-500 flex gap-1 p-2 items-center hover:bg-red-600 transition-all rounded-lg text-white shadow-sm hover:-translate-y-0.5 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M17 5V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V7h1a1 1 0 1 0 0-2zm-2-1H9v1h6zm2 3H7v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1z" clip-rule="evenodd" /><path d="M9 9h2v8H9zm4 0h2v8h-2z" /></g></svg>
+                                    " class="bg-slate-50 text-red-500 hover:bg-red-500 hover:text-white p-2 border border-slate-200/80 hover:border-red-500 transition-all duration-200 rounded-xl shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center cursor-pointer" title="Hapus Permanen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                     </button>
                                 @endif
-                                
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="10" class="text-center p-8 text-slate-500">
-                            <div class="flex flex-col items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" class="text-slate-300" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2l4-4"/></svg>
-                                <span class="font-medium">Tidak ada order yang masuk saat ini</span>
+                        <td colspan="10" class="text-center py-14 text-slate-400 bg-slate-50/20">
+                            <div class="flex flex-col items-center justify-center gap-3">
+                                <div class="p-3.5 bg-slate-100 rounded-full border border-slate-200/50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" class="text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"></path><rect x="9" y="3" width="6" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                                </div>
+                                <span class="font-bold text-slate-550">Tidak ada transaksi pesanan saat ini</span>
+                                <p class="text-xs text-slate-400 max-w-sm leading-relaxed">Coba ubah filter pencarian pembeli Anda atau tunggu pesanan baru masuk.</p>
                             </div>
                         </td>
                     </tr>
@@ -313,7 +337,7 @@ new class extends Component
         </div>
         
         @if($penjualan->hasPages())
-        <div class="p-4 border-t border-slate-100 bg-slate-50">
+        <div class="p-5 border-t border-slate-100 bg-slate-50/50">
             {{ $penjualan->links() }}
         </div>
         @endif
@@ -330,8 +354,10 @@ new class extends Component
 
                 if (distance < 0) {
                     timer.innerHTML = "WAKTU HABIS";
-                    timer.classList.replace('text-red-500', 'text-slate-500');
-                    timer.classList.replace('bg-red-50', 'bg-slate-100');
+                    timer.classList.replace('text-rose-600', 'text-slate-400');
+                    timer.classList.replace('bg-rose-50', 'bg-slate-100');
+                    timer.classList.remove('border-rose-100');
+                    timer.classList.add('border-slate-200/50');
                 } else {
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));

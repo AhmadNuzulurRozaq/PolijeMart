@@ -4,31 +4,33 @@
 
 @section('content')
 <div class="mb-8 text-center lg:text-left">
-    <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">VERIFIKASI EMAIL</h1>
-    <p class="text-sm text-slate-500 mt-3 font-medium leading-relaxed">
+    <h1 class="text-3xl font-black text-slate-900 tracking-tight bg-gradient-to-r from-primary-950 to-primary-750 bg-clip-text text-transparent uppercase">Verifikasi Email</h1>
+    <p class="text-sm text-slate-450 mt-2.5 font-semibold leading-relaxed">
         Terima kasih telah mendaftar di Polije Mart! Sebelum memulai, mohon verifikasi alamat email Anda dengan mengeklik tautan yang baru saja kami kirimkan. Jika Anda tidak menerima email tersebut, kami akan dengan senang hati mengirimkan ulang.
     </p>
 </div>
 
 @if (session('status') == 'verification-link-sent')
-    <div class="mb-8 bg-green-50 border border-green-200 text-green-700 px-4 py-4 rounded-xl flex items-start gap-3 shadow-sm">
-        <svg class="shrink-0 mt-0.5 text-green-500" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m10 17l-5-5l1.41-1.42L10 14.17l7.59-7.59L19 8m-7-6A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
-        <span class="text-sm font-semibold leading-tight">Tautan verifikasi baru telah berhasil dikirim ke alamat email yang Anda berikan saat pendaftaran.</span>
+    <div class="mb-6 bg-emerald-50/80 backdrop-blur border border-emerald-100 px-4 py-3.5 rounded-2xl flex items-center gap-3 shadow-premium text-emerald-800 text-sm font-semibold">
+        <div class="p-1 bg-emerald-500 text-white rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <span>Tautan verifikasi baru telah berhasil dikirim ke alamat email Anda.</span>
     </div>
 @endif
 
-<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 border-t border-slate-100 pt-6">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 border-t border-slate-100 pt-6">
     <form method="POST" action="{{ route('verification.send') }}" class="w-full sm:w-auto">
         @csrf
-        <button type="submit" class="w-full sm:w-auto py-3.5 px-6 bg-[#1C4E80] text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:bg-[#143a60] active:bg-[#0a233b] hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1C4E80]/50 text-sm">
+        <button type="submit" class="w-full sm:w-auto py-3.5 px-6 bg-gradient-to-r from-secondary-700 to-secondary-500 text-white font-extrabold rounded-xl hover:brightness-105 active:scale-[0.98] transition-all duration-200 shadow-md shadow-secondary-500/25 flex items-center justify-center gap-2 text-xs uppercase tracking-widest cursor-pointer">
             KIRIM ULANG EMAIL
         </button>
     </form>
 
     <form method="POST" action="{{ route('logout') }}" class="w-full sm:w-auto">
         @csrf
-        <button type="submit" class="w-full sm:w-auto py-3.5 px-6 text-sm text-slate-500 hover:text-red-600 bg-slate-50 hover:bg-red-50 rounded-xl font-bold transition-colors focus:outline-none flex justify-center items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h6.403v1H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192h6.404v1zm10.846-4.461l-.702-.72l2.319-2.319H9.192v-1h8.887l-2.32-2.32l.702-.718L20 12z"/></svg>
+        <button type="submit" class="w-full sm:w-auto py-3.5 px-6 text-xs text-slate-500 hover:text-red-650 bg-slate-50 hover:bg-rose-50 border border-slate-200/60 hover:border-rose-100 rounded-xl font-extrabold uppercase tracking-widest transition-all cursor-pointer flex justify-center items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             LOG OUT
         </button>
     </form>

@@ -39,9 +39,33 @@
                 <p class="mt-1 text-sm text-slate-500">Perbarui informasi profil dan alamat email akun Anda.</p>
             </header>
 
-            <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
+            <form method="post" action="{{ route('profile.update') }}" class="space-y-6" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
+
+                <!-- Foto Profil / Avatar -->
+                <div class="flex flex-col sm:flex-row gap-6 items-center pb-6 border-b border-slate-100/70">
+                    <div class="shrink-0 relative">
+                        @if($user->avatar)
+                            <img id="avatar-preview" src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-premium">
+                        @else
+                            <div id="avatar-placeholder" class="w-24 h-24 rounded-full bg-primary-50 text-primary-700 flex items-center justify-center font-black text-2xl border-4 border-white shadow-premium uppercase">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                            <img id="avatar-preview" src="" alt="Preview" class="hidden w-24 h-24 rounded-full object-cover border-4 border-white shadow-premium">
+                        @endif
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-black text-slate-700 uppercase tracking-wider pl-1">Foto Profil</label>
+                        <input type="file" name="avatar" id="avatar" accept="image/*" onchange="previewAvatar(event)"
+                            class="text-xs text-slate-550 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:uppercase file:bg-primary-50 file:text-primary-750 hover:file:bg-primary-100 transition-all cursor-pointer">
+                        <p class="text-[10px] text-slate-400 font-semibold pl-1">Mendukung format JPG, PNG, GIF, maksimal 2MB</p>
+                        @error('avatar')
+                            <p class="text-red-500 text-xs font-semibold mt-1 pl-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col gap-2">
@@ -213,6 +237,28 @@
                 document.getElementById('formDeleteAccount').submit();
             }
         });
+    }
+
+    function previewAvatar(event) {
+        const input = event.target;
+        const preview = document.getElementById('avatar-preview');
+        const placeholder = document.getElementById('avatar-placeholder');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                }
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>
 @endsection
