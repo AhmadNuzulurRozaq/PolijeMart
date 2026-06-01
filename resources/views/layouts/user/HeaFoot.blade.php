@@ -77,8 +77,8 @@
                 <!-- Kiri: Logo & Branding -->
                 <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer hover:opacity-90 transition-opacity">
                     <a href="{{ route('customer.index') }}" class="flex items-center gap-3 group">
-                        <div class="bg-white/10 p-2 rounded-xl border border-white/10 group-hover:rotate-6 transition-transform duration-300">
-                            <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-8 sm:w-10 drop-shadow-md">
+                        <div class="p-1 group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ asset('images/logoPolije.png') }}" alt="Logo Polije" class="w-9 sm:w-11 drop-shadow-md">
                         </div>
                         <span class="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-secondary-300 tracking-wider hidden sm:block">POLIJE MART</span>
                     </a>
@@ -115,15 +115,15 @@
 
                     <!-- Profile Dropdown -->
                     <div class="relative ml-1 sm:ml-2">
-                        <button type="button" id="userMenuBtn" class="flex items-center focus:outline-none p-1 rounded-full border-2 border-transparent hover:border-white/20 transition-all cursor-pointer">
+                        <button type="button" id="userMenuBtn" class="flex items-center focus:outline-none p-0.5 rounded-full hover:scale-105 transition-all cursor-pointer">
                             @if(Auth::check() && Auth::user()->avatar)
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full object-cover border border-white/20 shadow-lg">
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md">
                             @else
-                                <div class="w-10 h-10 bg-gradient-to-br from-secondary-400 to-secondary-600 text-white rounded-full flex items-center justify-center shadow-lg font-bold text-sm border border-white/20">
+                                <div class="w-10 h-10 bg-white text-secondary-600 rounded-full flex items-center justify-center shadow-md font-bold text-sm border-2 border-white">
                                     @if(Auth::check())
                                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                     @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <svg class="text-secondary-600" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     @endif
                                 </div>
                             @endif
@@ -174,7 +174,7 @@
         </div>
 
         <!-- Mobile Search Bar (Toggled) -->
-        <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-4 w-full bg-primary-950/95 backdrop-blur-md">
+        <div id="mobileSearchBar" class="hidden md:hidden px-5 pt-1.5 pb-5 w-full bg-transparent">
             <form action="{{ route('customer.allProduct') }}" method="GET" class="relative group w-full">
                 <input type="text" name="search" value="{{ request('search') }}"
                     class="w-full bg-white/5 border border-white/10 text-white placeholder-slate-400 px-5 py-2.5 rounded-full outline-none focus:bg-white focus:text-slate-800 focus:placeholder-slate-400 transition-all duration-300 shadow-inner text-sm" 

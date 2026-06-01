@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 29 Bulan Mei 2026 pada 11.20
+-- Waktu pembuatan: 01 Jun 2026 pada 07.00
 -- Versi server: 12.2.2-MariaDB
 -- Versi PHP: 8.5.6
 
@@ -45,7 +45,7 @@ CREATE TABLE `barangs` (
 --
 
 INSERT INTO `barangs` (`id`, `kode_barang`, `nama_barang`, `deskripsi`, `stok`, `kategori_id`, `harga`, `image`, `created_at`, `updated_at`) VALUES
-(2, 'TF-SGH-01', 'Indomie Goreng', 'Mie instan goreng rasa original', 49, 1, 3500.00, 'images/W0xOZCQNYLg7VaiDzklOTVyRMKcRQPEm8uJX8fVD.png', NULL, '2026-05-28 03:43:26'),
+(2, 'TF-SGH-01', 'Indomie Goreng', 'Mie instan goreng rasa original', 50, 1, 3500.00, 'images/W0xOZCQNYLg7VaiDzklOTVyRMKcRQPEm8uJX8fVD.png', NULL, '2026-06-01 06:41:57'),
 (3, 'TF-SGM-01', 'Indomie Kuah Ayam Bawang', 'Mie instan kuah rasa ayam bawang', 50, 1, 3500.00, 'images/haeLnP1iqXjzCb2YSZgsFLXlrtd5cWhPdafwYynF.png', NULL, '2026-05-28 03:32:02'),
 (4, 'TF-MIE-02', 'Mie Sedap Goreng', 'Mie instan goreng rasa original', 40, 1, 3000.00, 'images/1qFJglltUHBMjej7mStl3nJYy9zVogiMvYQyxHdW.webp', NULL, '2026-05-28 03:32:15'),
 (5, 'TF-SAT-03', 'Roti Tawar Sari Roti', 'Roti tawar putih 400gr', 20, 1, 12000.00, 'images/ptTlQGl3fFzBidreYET7CmuDquLlne5WMTEnVGbU.jpg', NULL, '2026-05-28 03:33:55'),
@@ -81,6 +81,14 @@ CREATE TABLE `cache` (
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `cache`
+--
+
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('polijemart-cache-nuzulnazil14@gmail.com|127.0.0.1', 'i:1;', 1780296785),
+('polijemart-cache-nuzulnazil14@gmail.com|127.0.0.1:timer', 'i:1780296785;', 1780296785);
+
 -- --------------------------------------------------------
 
 --
@@ -109,13 +117,6 @@ CREATE TABLE `detail_penjualans` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `detail_penjualans`
---
-
-INSERT INTO `detail_penjualans` (`id`, `penjualan_id`, `barang_id`, `jumlah`, `harga`, `subtotal`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 1, 3500.00, 3500.00, '2026-05-28 03:42:16', '2026-05-28 03:42:16');
 
 -- --------------------------------------------------------
 
@@ -265,13 +266,6 @@ CREATE TABLE `penjualans` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `penjualans`
---
-
-INSERT INTO `penjualans` (`id`, `nomor_pesanan`, `user_id`, `tanggal_penjualan`, `total_bayar`, `status`, `batas_waktu`, `created_at`, `updated_at`) VALUES
-(1, 'TRX-20260528104216-B5F', 2, '2026-05-28', 5500.00, 'selesai', '2026-05-29 10:43:26', '2026-05-28 03:42:16', '2026-05-28 03:43:26');
-
 -- --------------------------------------------------------
 
 --
@@ -315,6 +309,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 ('6PzrIOVLO9KJ2p7h6hHhDS7QUJMAyRNvux53vb7K', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoicWZXaHdkVzBnNU9pMWJRMkg0OVVFa1J1bnJjRnpydVN4MEhqS2YyaiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NTQ6Imh0dHA6Ly9jYWhvb3RzLWNoYXR0aW5nLWN5bWJhbC5uZ3Jvay1mcmVlLmRldi9jdXN0b21lciI7czo1OiJyb3V0ZSI7czoxNDoiY3VzdG9tZXIuaW5kZXgiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO3M6NDoiY2FydCI7YToxOntpOjQ7YTo2OntzOjI6ImlkIjtpOjQ7czoxMToibmFtYV9iYXJhbmciO3M6MTY6Ik1pZSBTZWRhcCBHb3JlbmciO3M6NToiaGFyZ2EiO3M6NzoiMzAwMC4wMCI7czo1OiJpbWFnZSI7czo1MjoiaW1hZ2VzLzFxRkpnbGx0VUhCTWplajdtU3RsM25KWXk5elZvZ2lNdllReXhIZFcud2VicCI7czo2OiJqdW1sYWgiO3M6MToiMSI7czo0OiJzdG9rIjtpOjQwO319fQ==', 1779946894),
 ('GjxC5StyxDyu5ekY4MYvXNbO4oZMPkrlACPrvmnx', 1, '127.0.0.1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Mobile Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiakVVNkJuSjRmczZFN1NXRjJvdnZTeVFkYVAyVkxDZjdFM1VSUFdQUSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NTI6Imh0dHA6Ly9jYWhvb3RzLWNoYXR0aW5nLWN5bWJhbC5uZ3Jvay1mcmVlLmRldi9vcmRlcnMiO3M6NToicm91dGUiO3M6MTc6ImFkbWluLm1hbmFnZU9yZGVyIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1779944704),
 ('qzCi1BJKecKEgTtjwy6GAM082agilYmbKK5QAua0', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQXY2NFd2N1Y5S1FCNDRpV2w3VnhoVDNCYXF2QzJGSUtNWWVVMk11TyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9kYXNoYm9hcmQiO3M6NToicm91dGUiO3M6MTU6ImFkbWluLmRhc2hib2FyZCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1779947891),
+('RQf8tMfqXi2rP8QekXMHotTo2b21wG35M2BEaeag', 2, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWndIcFFwcWxGendGREx3VEFHUVNkQXlIWFlmcXFCQVViTklsbW80eSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9maWxlIjtzOjU6InJvdXRlIjtzOjEyOiJwcm9maWxlLmVkaXQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=', 1780296972),
 ('yU4LLSgud7y6cOXZYuTZ3aF2Kl1196ZmH9W0wybM', 2, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiV3BKdUJCUHVoOTc4ckxuMlM0ZlFyUlViRm5vYVVXRk12RWhhdlpGZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9jdXN0b21lci9kZXRhaWwvOCI7czo1OiJyb3V0ZSI7czoyMjoiY3VzdG9tZXIuZGV0YWlsUHJvZHVjdCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1779947859);
 
 -- --------------------------------------------------------
