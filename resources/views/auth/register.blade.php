@@ -20,9 +20,9 @@
             </div>
             <input type="text" name="name" id="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required
             class="w-full pl-11 pr-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('name') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('name') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
-        @error('name') <p class="text-rose-550 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
+        @error('name') <p class="text-red-600 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
     </div>
 
     <!-- Input Email -->
@@ -34,9 +34,9 @@
             </div>
             <input type="email" name="email" id="email" placeholder="nama@email.com" value="{{ old('email') }}" required
             class="w-full pl-11 pr-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('email') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('email') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
-        @error('email') <p class="text-rose-550 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
+        @error('email') <p class="text-red-600 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
     </div>
 
     <!-- Input Password -->
@@ -48,9 +48,9 @@
             </div>
             <input type="password" name="password" id="password" placeholder="Min. 8 Karakter" required
             class="w-full pl-11 pr-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('password') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('password') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
-        @error('password') <p class="text-rose-550 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
+        @error('password') <p class="text-red-600 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
     </div>
 
     <!-- Input Password Confirmation -->
@@ -62,9 +62,9 @@
             </div>
             <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ulangi Kata Sandi" required
             class="w-full pl-11 pr-4 py-3 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('password_confirmation') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('password_confirmation') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
-        @error('password_confirmation') <p class="text-rose-550 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
+        @error('password_confirmation') <p class="text-red-600 text-xs font-bold mt-1 ml-1.5">{{ $message }}</p> @enderror
     </div>
 
     <div class="pt-4">

@@ -24,7 +24,7 @@
             class="w-full pl-11 pr-4 py-3.5 bg-slate-100 border border-slate-200 outline-none rounded-xl text-sm font-semibold text-slate-450 cursor-not-allowed">
         </div>
         @error('email')
-            <p class="text-rose-550 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
+            <p class="text-red-600 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 <span>{{ $message }}</span>
             </p>
@@ -40,10 +40,10 @@
             </div>
             <input type="password" name="password" id="password" placeholder="••••••••" required
             class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('password') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('password') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
         @error('password')
-            <p class="text-rose-550 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
+            <p class="text-red-600 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 <span>{{ $message }}</span>
             </p>
@@ -59,10 +59,10 @@
             </div>
             <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" required
             class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border outline-none rounded-xl text-sm transition-all duration-300 font-semibold text-slate-800 focus:bg-white focus:ring-4 focus:ring-secondary-500/10
-            @error('password_confirmation') border-rose-450 focus:border-rose-500 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
+            @error('password_confirmation') border-red-500 focus:border-red-600 @else border-slate-200 focus:border-secondary-500 hover:border-slate-350 @enderror">
         </div>
         @error('password_confirmation')
-            <p class="text-rose-550 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
+            <p class="text-red-600 text-xs font-bold mt-1.5 ml-1.5 flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 <span>{{ $message }}</span>
             </p>
